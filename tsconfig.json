@@ -1,0 +1,36 @@
+{
+  /* The PROJECT config: covers every .ts file in the package, emits nothing.
+     This is what `npm run typecheck` and eslint's project service use — eslint
+     resolves the nearest tsconfig.json to each file, so eval/ must be included
+     here or its files fail to parse. Emit is tsconfig.build.json's job. */
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node"],
+
+    "noEmit": true,
+
+    /* Source uses explicit .ts import specifiers so `node --experimental-strip-types`
+       can run it directly; the build config rewrites them to .js for dist. */
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "resolveJsonModule": true,
+
+    /* Node's type stripping only erases — no enums, namespaces, or parameter
+       properties. This flag makes tsc reject anything Node could not run. */
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "eval/**/*.ts", "test/**/*.ts"]
+}

@@ -1,0 +1,20 @@
+{
+  /* Emit config: src only, so output lands at dist/*.js and `bin` stays stable.
+     eval/ and test/ are typechecked by tsconfig.json but never shipped — `include`
+     already excludes them, and `exclude` restates it because tests living under
+     src/ would otherwise be emitted into dist/ and published via `files`. */
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": false,
+    /* No sourcemaps in the tarball: `files` ships dist/ but not src/, so every
+       emitted .js.map referenced a file that is not there — 33 dangling
+       pointers and ~200 KB for nothing. Debugging the published server means
+       reading dist/, which is plain readable ESM. */
+    "sourceMap": false
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["test/**", "**/*.test.ts"]
+}
