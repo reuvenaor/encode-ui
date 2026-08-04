@@ -1,0 +1,437 @@
+{
+  "$comment": "Labeled retrieval eval for the encode-ui registry RAG index. `expect` is the RELEVANT SET — a hit is any expected item appearing in the top-k. `kind` groups queries by what they stress: intent (synonym/paraphrase the substring ladder cannot reach), behavior (described by what it does), api (technical/compositional), exact (name is in the query — lexical should win), a11y (accessibility affordances), negation (precision probes — `forbid` lists items that must NOT appear in the top 5, scored as violation@5; a negation query usually also has a true answer in `expect`), absence (`expect` is EMPTY — the registry genuinely has nothing for this; scored via the top-1 cosine calibration, and `forbid` may name a known trap). `forbid` is allowed on any kind. eval/queries.ts validates every name against the index and enforces the kind invariants; themes (registry:theme) are deliberately unlabeled.",
+  "queries": [
+    {
+      "q": "something that shows a loading placeholder while data fetches",
+      "expect": ["skeleton", "skeleton-text"],
+      "kind": "intent"
+    },
+    {
+      "q": "ask the user to confirm before deleting something destructive",
+      "expect": ["alert-dialog", "confirmation"],
+      "kind": "intent"
+    },
+    {
+      "q": "what to show when there are no results yet",
+      "expect": ["empty"],
+      "kind": "intent"
+    },
+    {
+      "q": "inline spinner to indicate work in progress",
+      "expect": ["spinner", "progress"],
+      "kind": "intent"
+    },
+    {
+      "q": "pop up a temporary notification message after an action succeeds",
+      "expect": ["sonner"],
+      "kind": "intent"
+    },
+    {
+      "q": "let someone pick one option out of several mutually exclusive choices",
+      "expect": ["radio-group", "select"],
+      "kind": "intent"
+    },
+    {
+      "q": "hide long content behind a header the user can expand",
+      "expect": ["accordion", "collapsible"],
+      "kind": "intent"
+    },
+    {
+      "q": "show the user where they are in the site hierarchy",
+      "expect": ["breadcrumb"],
+      "kind": "intent"
+    },
+    {
+      "q": "keyboard shortcut hint chip",
+      "expect": ["kbd"],
+      "kind": "intent"
+    },
+    {
+      "q": "obscured text entry with a reveal toggle",
+      "expect": ["password-input"],
+      "kind": "intent"
+    },
+    {
+      "q": "let the user paste a verification code from an SMS",
+      "expect": ["input-otp"],
+      "kind": "intent"
+    },
+    {
+      "q": "divider line between sections",
+      "expect": ["separator"],
+      "kind": "intent"
+    },
+    {
+      "q": "profile picture with initials when the image fails",
+      "expect": ["avatar"],
+      "kind": "intent"
+    },
+    {
+      "q": "celebrate a completed action with a burst of particles",
+      "expect": ["confetti"],
+      "kind": "intent"
+    },
+    {
+      "q": "scrolling strip of partner logos that loops forever",
+      "expect": ["marquee"],
+      "kind": "intent"
+    },
+
+    {
+      "q": "a button that follows the cursor",
+      "expect": ["magnetic-button"],
+      "kind": "behavior"
+    },
+    {
+      "q": "card that tilts in 3D toward the pointer",
+      "expect": ["tilt-card"],
+      "kind": "behavior"
+    },
+    {
+      "q": "text that types itself out character by character",
+      "expect": ["typing-animation"],
+      "kind": "behavior"
+    },
+    {
+      "q": "number that animates upward when it scrolls into view",
+      "expect": ["count-up", "number-ticker", "stat-counters"],
+      "kind": "behavior"
+    },
+    {
+      "q": "headline where each word cycles through a list",
+      "expect": ["word-rotate"],
+      "kind": "behavior"
+    },
+    {
+      "q": "drag a handle all the way across to confirm",
+      "expect": ["slide-to-unlock"],
+      "kind": "behavior"
+    },
+    {
+      "q": "rows that smoothly animate to new positions when reordered",
+      "expect": ["flip-list"],
+      "kind": "behavior"
+    },
+    {
+      "q": "glowing light traveling around the edge of a container",
+      "expect": ["border-beam", "shine-border", "gradient-border-card"],
+      "kind": "behavior"
+    },
+    {
+      "q": "bar at the top of the page showing how far down you have scrolled",
+      "expect": ["scroll-progress"],
+      "kind": "behavior"
+    },
+    {
+      "q": "elements circling around a center point",
+      "expect": ["orbiting-circles"],
+      "kind": "behavior"
+    },
+    {
+      "q": "content that fades and slides up as you scroll to it",
+      "expect": ["reveal", "stagger"],
+      "kind": "behavior"
+    },
+    {
+      "q": "iOS style scrolling drum wheel selector",
+      "expect": ["wheel-picker"],
+      "kind": "behavior"
+    },
+    {
+      "q": "copy text to the clipboard with a checkmark confirmation",
+      "expect": ["copy-button", "snippet"],
+      "kind": "behavior"
+    },
+
+    {
+      "q": "sortable table with pagination for lots of rows",
+      "expect": ["data-table", "data-table-pagination", "data-table-column-header"],
+      "kind": "api"
+    },
+    {
+      "q": "chart with a legend and tooltips wired to theme colors",
+      "expect": ["chart", "chart-series"],
+      "kind": "api"
+    },
+    {
+      "q": "donut chart showing parts of a whole with a total in the middle",
+      "expect": ["pie-chart"],
+      "kind": "api"
+    },
+    {
+      "q": "stacked area chart over time",
+      "expect": ["area-chart"],
+      "kind": "api"
+    },
+    {
+      "q": "form validation with zod and react-hook-form",
+      "expect": ["form", "field"],
+      "kind": "api"
+    },
+    {
+      "q": "drag and drop file upload with size and type limits",
+      "expect": ["file-upload"],
+      "kind": "api"
+    },
+    {
+      "q": "searchable dropdown where you can pick several values at once",
+      "expect": ["multi-select"],
+      "kind": "api"
+    },
+    {
+      "q": "pick a date and a time together",
+      "expect": ["datetime-picker", "calendar"],
+      "kind": "api"
+    },
+    {
+      "q": "enter a phone number with a country dial code",
+      "expect": ["phone-input"],
+      "kind": "api"
+    },
+    {
+      "q": "chips input where enter commits each tag",
+      "expect": ["tags-input"],
+      "kind": "api"
+    },
+    {
+      "q": "command palette opened with cmd k",
+      "expect": ["command"],
+      "kind": "api"
+    },
+    {
+      "q": "resizable split panes",
+      "expect": ["resizable"],
+      "kind": "api"
+    },
+    {
+      "q": "app sidebar that collapses off canvas on mobile",
+      "expect": ["sidebar"],
+      "kind": "api"
+    },
+    {
+      "q": "detect whether the device has a fine pointer",
+      "expect": ["use-fine-pointer"],
+      "kind": "api"
+    },
+    {
+      "q": "helper to merge tailwind class names",
+      "expect": ["utils"],
+      "kind": "api"
+    },
+
+    {
+      "q": "magnetic button",
+      "expect": ["magnetic-button"],
+      "kind": "exact"
+    },
+    {
+      "q": "sonner",
+      "expect": ["sonner"],
+      "kind": "exact"
+    },
+    {
+      "q": "bento grid",
+      "expect": ["bento-grid"],
+      "kind": "exact"
+    },
+    {
+      "q": "retro grid background",
+      "expect": ["retro-grid"],
+      "kind": "exact"
+    },
+    {
+      "q": "aspect ratio",
+      "expect": ["aspect-ratio"],
+      "kind": "exact"
+    },
+
+    {
+      "q": "screen reader text alternative for a chart",
+      "expect": ["chart-data-table"],
+      "kind": "a11y"
+    },
+    {
+      "q": "let users turn off animations",
+      "expect": ["reduce-motion-toggle"],
+      "kind": "a11y"
+    },
+    {
+      "q": "gate entrance animations so prerendered html ships visible",
+      "expect": ["use-motion-armed"],
+      "kind": "a11y"
+    },
+    {
+      "q": "accessible testimonial quote with attribution",
+      "expect": ["testimonial-card"],
+      "kind": "a11y"
+    },
+
+    { "q": "flip a setting on or off", "expect": ["switch", "toggle"], "kind": "intent" },
+    { "q": "small colored label showing an item's status", "expect": ["badge", "status"], "kind": "intent" },
+    { "q": "callout box drawing attention to important information", "expect": ["alert"], "kind": "intent" },
+    { "q": "short hint that appears when hovering an icon", "expect": ["tooltip"], "kind": "intent" },
+    { "q": "menu that opens on right click", "expect": ["context-menu"], "kind": "intent" },
+    { "q": "panel that slides up from the bottom on mobile", "expect": ["drawer", "sheet"], "kind": "intent" },
+    { "q": "small floating panel anchored to the button that opened it", "expect": ["popover"], "kind": "intent" },
+    { "q": "let the user step through pages of results", "expect": ["pagination", "data-table-pagination"], "kind": "intent" },
+    { "q": "switch between content sections without leaving the page", "expect": ["tabs"], "kind": "intent" },
+    { "q": "scrollable box with custom styled scrollbars", "expect": ["scroll-area"], "kind": "intent" },
+    { "q": "let the user choose a color", "expect": ["color-picker"], "kind": "intent" },
+    { "q": "search box with a clear button and a loading state", "expect": ["search-input"], "kind": "intent" },
+    { "q": "bigger box for typing a paragraph of feedback", "expect": ["textarea"], "kind": "intent" },
+    { "q": "overlapping profile pictures showing how many people joined", "expect": ["avatar-circles"], "kind": "intent" },
+    { "q": "image slideshow with next and previous arrows", "expect": ["carousel"], "kind": "intent" },
+    { "q": "subtle dotted backdrop for a hero section", "expect": ["dot-pattern"], "kind": "intent" },
+    { "q": "shooting stars falling across the hero background", "expect": ["meteors"], "kind": "intent" },
+    { "q": "headline text with a moving metallic shine", "expect": ["animated-shiny-text", "gradient-text"], "kind": "intent" },
+    { "q": "compare plan features side by side with checkmarks", "expect": ["comparison-table"], "kind": "intent" },
+    { "q": "list row with an icon a title and a trailing action", "expect": ["item"], "kind": "intent" },
+    { "q": "persistent menu bar like a desktop app", "expect": ["menubar"], "kind": "intent" },
+    { "q": "input whose label moves up out of the way when you type", "expect": ["floating-label-input"], "kind": "intent" },
+    { "q": "pick a numeric value by dragging along a track", "expect": ["slider"], "kind": "intent" },
+    { "q": "kebab menu of actions for a row", "expect": ["dropdown-menu"], "kind": "intent" },
+    { "q": "group several related buttons into one segmented bar", "expect": ["button-group"], "kind": "intent" },
+
+    { "q": "call to action with a softly pulsing glow around it", "expect": ["pulsating-button"], "kind": "behavior" },
+    { "q": "button where an arrow slides in and the label slides away on hover", "expect": ["interactive-hover-button"], "kind": "behavior" },
+    { "q": "click sends a soft ripple out from the cursor position", "expect": ["ripple-button"], "kind": "behavior" },
+    { "q": "shine sweeping around a border ring", "expect": ["shimmer-button", "shine-border"], "kind": "behavior" },
+    { "q": "card glow and spotlight that follow the mouse inside it", "expect": ["magic-card"], "kind": "behavior" },
+    { "q": "one pointer glow shared across a whole grid of cards", "expect": ["spotlight-card"], "kind": "behavior" },
+    { "q": "card that grows open to reveal extra content", "expect": ["expanding-card"], "kind": "behavior" },
+    { "q": "background of squares flickering at random", "expect": ["flickering-grid"], "kind": "behavior" },
+    { "q": "circles pulsing outward from the center", "expect": ["ripple"], "kind": "behavior" },
+    { "q": "svg line that draws itself as you scroll to it", "expect": ["path-draw"], "kind": "behavior" },
+    { "q": "canvas where you drag boxes around and wire them together", "expect": ["flow-canvas"], "kind": "behavior" },
+    { "q": "boxes joined by arrows showing a process from start to finish", "expect": ["flow-diagram"], "kind": "behavior" },
+    { "q": "dashes marching along a connector toward its target", "expect": ["flow-edge"], "kind": "behavior" },
+    { "q": "digits roll like an odometer when the value changes", "expect": ["motion-number", "number-ticker"], "kind": "behavior" },
+    { "q": "placeholder that cycles suggestions and dissolves the text on submit", "expect": ["vanish-input"], "kind": "behavior" },
+    { "q": "new items spring in at the top while the rest shift down", "expect": ["animated-list"], "kind": "behavior" },
+    { "q": "each step slides out one side and the next slides in from the other", "expect": ["step-switcher"], "kind": "behavior" },
+    { "q": "background layer that moves slower than the page while scrolling", "expect": ["parallax"], "kind": "behavior" },
+    { "q": "words with little stars twinkling around them", "expect": ["sparkles-text"], "kind": "behavior" },
+    { "q": "heading lines that slide up from behind a clipping mask", "expect": ["reveal-text"], "kind": "behavior" },
+    { "q": "active pill that glides between tabs when switching", "expect": ["animated-tabs"], "kind": "behavior" },
+    { "q": "dialog that springs open and fades out on close", "expect": ["motion-dialog"], "kind": "behavior" },
+    { "q": "slider that rubber bands when dragged past its end", "expect": ["elastic-slider"], "kind": "behavior" },
+    { "q": "perspective grid floor rushing toward the viewer", "expect": ["retro-grid"], "kind": "behavior" },
+
+    { "q": "grouped or stacked bars with a horizontal option", "expect": ["bar-chart"], "kind": "api" },
+    { "q": "line chart with step interpolation that keeps gaps as gaps", "expect": ["line-chart"], "kind": "api" },
+    { "q": "radar chart comparing measures across shared axes", "expect": ["radar-chart"], "kind": "api" },
+    { "q": "gauge chart with concentric arcs and a pinned max", "expect": ["radial-chart"], "kind": "api" },
+    { "q": "styled table primitives with header body and caption", "expect": ["table"], "kind": "api" },
+    { "q": "checkbox wired into form validation with error messages", "expect": ["checkbox", "form", "field"], "kind": "api" },
+    { "q": "themed single line text input", "expect": ["input"], "kind": "api" },
+    { "q": "input with an attached button or addon at the end", "expect": ["input-group"], "kind": "api" },
+    { "q": "accessible label element paired to its control", "expect": ["label"], "kind": "api" },
+    { "q": "hook that reports if the viewport is below the mobile breakpoint", "expect": ["use-mobile"], "kind": "api" },
+    { "q": "render a button as a link with aschild composition", "expect": ["button"], "kind": "api" },
+    { "q": "dual thumb slider reporting a min and max range", "expect": ["range-slider-with-ticks"], "kind": "api" },
+    { "q": "modal on radix dialog with the focus trap handled", "expect": ["dialog"], "kind": "api" },
+    { "q": "panel that slides in from a screen edge", "expect": ["sheet", "drawer"], "kind": "api" },
+    { "q": "preview card on radix hover card", "expect": ["hover-card"], "kind": "api" },
+    { "q": "custom node renderer with connection points on chosen sides", "expect": ["flow-node"], "kind": "api" },
+
+    { "q": "number ticker", "expect": ["number-ticker"], "kind": "exact" },
+    { "q": "vanish input", "expect": ["vanish-input"], "kind": "exact" },
+    { "q": "@encode-ui/spotlight-card", "expect": ["spotlight-card"], "kind": "exact" },
+    { "q": "flow diagram", "expect": ["flow-diagram"], "kind": "exact" },
+    { "q": "flow canvas", "expect": ["flow-canvas"], "kind": "exact" },
+    { "q": "wheel picker", "expect": ["wheel-picker"], "kind": "exact" },
+    { "q": "gradient text", "expect": ["gradient-text"], "kind": "exact" },
+    { "q": "step switcher", "expect": ["step-switcher"], "kind": "exact" },
+    { "q": "avatar circles", "expect": ["avatar-circles"], "kind": "exact" },
+    { "q": "elastic slider", "expect": ["elastic-slider"], "kind": "exact" },
+    { "q": "menubar", "expect": ["menubar"], "kind": "exact" },
+
+    { "q": "announce added and removed entries politely to screen readers", "expect": ["file-upload", "tags-input"], "kind": "a11y" },
+    { "q": "sortable column header that sets aria-sort on the right column", "expect": ["data-table-column-header"], "kind": "a11y" },
+    { "q": "comparison cells that pair icons with screen reader text", "expect": ["comparison-table"], "kind": "a11y" },
+    { "q": "drum picker fully operable from the keyboard", "expect": ["wheel-picker"], "kind": "a11y" },
+    { "q": "selection markers that never rely on color alone", "expect": ["color-picker", "password-input"], "kind": "a11y" },
+    { "q": "search field that announces its loading politely", "expect": ["search-input"], "kind": "a11y" },
+    { "q": "page counter read out through a polite live region", "expect": ["data-table-pagination"], "kind": "a11y" },
+    { "q": "announce the final value once instead of every animation tick", "expect": ["motion-number"], "kind": "a11y" },
+    { "q": "tabs with correct roles and arrow key navigation", "expect": ["tabs", "animated-tabs"], "kind": "a11y" },
+    { "q": "animated dialog that keeps the focus trap and escape behavior", "expect": ["motion-dialog"], "kind": "a11y" },
+    { "q": "animated counter that still gives screen readers the final number", "expect": ["count-up", "stat-counters"], "kind": "a11y" },
+
+    { "q": "card with a photo or image slot at the top", "expect": ["minimal-card"], "forbid": ["texture-card"], "kind": "negation" },
+    { "q": "chart whose data points are keyboard reachable", "expect": ["area-chart", "bar-chart", "line-chart"], "forbid": ["pie-chart", "radar-chart", "radial-chart"], "kind": "negation" },
+    { "q": "pager where every page is its own real url", "expect": ["pagination"], "forbid": ["data-table-pagination"], "kind": "negation" },
+    { "q": "visible table users can sort and filter on screen", "expect": ["data-table"], "forbid": ["chart-data-table"], "kind": "negation" },
+    { "q": "card with a plain visible border", "expect": ["card"], "forbid": ["minimal-card"], "kind": "negation" },
+    { "q": "background pattern that never animates", "expect": ["dot-pattern", "grid-pattern"], "forbid": ["flickering-grid", "retro-grid"], "kind": "negation" },
+    { "q": "loading indicator that shows how much is complete", "expect": ["progress"], "forbid": ["spinner"], "kind": "negation" },
+    { "q": "actions menu opened from a normal left click", "expect": ["dropdown-menu"], "forbid": ["context-menu"], "kind": "negation" },
+    { "q": "date grid rendered inline on the page not in a popover", "expect": ["calendar"], "forbid": ["datetime-picker"], "kind": "negation" },
+    { "q": "text field for several lines not one", "expect": ["textarea"], "forbid": ["input"], "kind": "negation" },
+    { "q": "slider with a single thumb", "expect": ["slider"], "forbid": ["range-slider-with-ticks"], "kind": "negation" },
+    { "q": "plain content card without any pointer effects", "expect": ["card"], "forbid": ["magic-card", "tilt-card", "spotlight-card"], "kind": "negation" },
+    { "q": "grid background drawn with lines instead of dots", "expect": ["grid-pattern"], "forbid": ["dot-pattern"], "kind": "negation" },
+    { "q": "pick tags from a predefined searchable list", "expect": ["multi-select"], "forbid": ["tags-input"], "kind": "negation" },
+    { "q": "floating panel that does not block the rest of the page", "expect": ["popover"], "forbid": ["dialog", "alert-dialog"], "kind": "negation" },
+    { "q": "modal the user can dismiss by clicking the backdrop", "expect": ["dialog", "motion-dialog"], "forbid": ["alert-dialog"], "kind": "negation" },
+    { "q": "animated dotted background", "expect": ["flickering-grid"], "forbid": ["dot-pattern"], "kind": "negation" },
+    { "q": "plain table markup without sorting or pagination", "expect": ["table"], "forbid": ["data-table"], "kind": "negation" },
+    { "q": "confirmation the user must answer before continuing", "expect": ["alert-dialog", "confirmation"], "forbid": ["dialog"], "kind": "negation" },
+    { "q": "fuzzy filtering command list as you type", "expect": ["command"], "forbid": ["search-input"], "kind": "negation" },
+
+    { "q": "chat conversation container that stays pinned to the newest message while replies stream in", "expect": ["message-scroller"], "kind": "behavior" },
+    { "q": "file chip in a chat composer showing upload progress states", "expect": ["attachment"], "kind": "intent" },
+    { "q": "date separator row between groups of chat messages", "expect": ["marker"], "kind": "intent" },
+    { "q": "ready made login form section with email and password", "expect": ["login-01"], "kind": "intent" },
+    { "q": "landing page hero with headline and call to action buttons", "expect": ["hero-01"], "kind": "intent" },
+    { "q": "strip of customer company logos scrolling for social proof", "expect": ["social-proof-01", "marquee"], "kind": "intent" },
+    { "q": "grid of customer quotes with names and roles", "expect": ["testimonials-02", "testimonial-card"], "kind": "intent" },
+    { "q": "analytics dashboard section with visitor metrics and a trend chart", "expect": ["metrics-01"], "kind": "intent" },
+    { "q": "wait until the user stops typing before firing the search", "expect": ["use-debounce"], "kind": "behavior" },
+    { "q": "run a callback when clicking outside an element", "expect": ["use-click-outside"], "kind": "api" },
+    { "q": "component that works controlled or uncontrolled with one hook", "expect": ["use-controllable-state"], "kind": "api" },
+    { "q": "dropdown with a text box to filter and pick a single option", "expect": ["combobox"], "kind": "intent" },
+    { "q": "select a start and end date for a booking", "expect": ["date-picker"], "kind": "intent" },
+    { "q": "native select", "expect": ["native-select"], "kind": "exact" },
+    { "q": "switch the app direction to right-to-left", "expect": ["direction"], "kind": "behavior" },
+    { "q": "typography styles for prose headings and blockquotes", "expect": ["typography"], "kind": "intent" },
+
+    { "q": "zoom into an image on hover", "expect": ["image-zoom"], "kind": "intent" },
+    { "q": "before and after image comparison slider", "expect": ["image-comparison"], "forbid": ["slider"], "kind": "negation" },
+    { "q": "blurred low quality image placeholder that sharpens when loaded", "expect": [], "kind": "absence" },
+    { "q": "lightbox gallery that opens images fullscreen", "expect": ["image-zoom"], "kind": "intent" },
+    { "q": "rich text editor with bold and italic buttons", "expect": [], "kind": "absence" },
+    { "q": "video player with custom controls", "expect": [], "kind": "absence" },
+    { "q": "kanban board with draggable columns", "expect": [], "kind": "absence" },
+    { "q": "tree view for nested folders", "expect": ["file-tree"], "kind": "intent" },
+    { "q": "drag and drop to reorder list items", "expect": ["sortable-list"], "forbid": ["flip-list"], "kind": "negation" },
+    { "q": "star rating input", "expect": ["rating"], "kind": "exact" },
+    { "q": "interactive map with location markers", "expect": [], "forbid": ["marker"], "kind": "absence" },
+    { "q": "timeline of events down the page", "expect": ["timeline", "experience-01"], "kind": "intent" },
+    { "q": "code editor with syntax highlighting", "expect": ["syntax-text", "code-block"], "kind": "intent" },
+    { "q": "masonry layout with variable height cards", "expect": ["masonry"], "forbid": ["bento-grid"], "kind": "negation" },
+    { "q": "chat message thread with bubbles", "expect": ["message", "bubble"], "kind": "intent" },
+    { "q": "persist a user preference to cookies or localstorage", "expect": ["use-local-storage"], "forbid": ["reduce-motion-toggle"], "kind": "negation" },
+    { "q": "button that follows the finger on touch screens", "expect": [], "forbid": ["magnetic-button"], "kind": "absence" },
+    { "q": "detect device type from the user agent string", "expect": [], "forbid": ["use-fine-pointer", "use-mobile"], "kind": "absence" },
+    { "q": "chart with an entrance animation when it first loads", "expect": [], "forbid": ["area-chart", "bar-chart", "line-chart"], "kind": "absence" },
+    { "q": "phone input with built in number validation", "expect": [], "forbid": ["phone-input"], "kind": "absence" },
+    { "q": "show a git commit with its hash, message and changed files", "expect": ["commit"], "kind": "intent" },
+    { "q": "display environment variables with the secrets masked until revealed", "expect": ["env-vars"], "kind": "intent" },
+    { "q": "render ANSI colored terminal output from a build log", "expect": ["terminal-log"], "kind": "behavior" },
+    { "q": "documentation table for an API endpoint's request fields", "expect": ["schema-display"], "kind": "intent" },
+    { "q": "show a parsed error stack trace with collapsible library frames", "expect": ["stack-trace"], "kind": "behavior" },
+    { "q": "npm package card with version and weekly downloads", "expect": ["package-info"], "kind": "intent" },
+    { "q": "collapsible tree view of parsed JSON data", "expect": ["json-text"], "kind": "behavior" },
+    { "q": "show line by line code changes with additions and deletions", "expect": ["diff-text"], "kind": "intent" },
+    { "q": "stream of log lines with severity levels", "expect": ["log-stream-text"], "kind": "intent" },
+    { "q": "highlight every match of a search query inside a paragraph", "expect": ["search-highlight-text", "regex-text"], "kind": "behavior" },
+    { "q": "live digital clock that updates every second", "expect": ["clock-text"], "kind": "behavior" },
+    { "q": "seven segment digits like a digital watch", "expect": ["lcd-text"], "kind": "intent" },
+    { "q": "airport departure board letters made of dots", "expect": ["dot-matrix-text"], "kind": "intent" },
+    { "q": "truncate a long file path in the middle keeping the extension", "expect": ["middle-truncation"], "kind": "behavior" },
+    { "q": "card describing an AI agent's model, instructions and tools", "expect": ["agent"], "kind": "intent" },
+    { "q": "area chart normalized to one hundred percent stacked", "expect": ["area-chart"], "kind": "api" },
+    { "q": "bar chart with a zero reference line for negative values", "expect": ["bar-chart"], "kind": "api" }
+  ]
+}
