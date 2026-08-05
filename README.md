@@ -25,7 +25,7 @@ engine is optional, so a machine that can't build it still installs and still ru
 The `--` is required; without it `claude` reads the server's flags as its own.
 
 ```bash
-claude mcp add encode-ui-registry -- npx -y encode-ui
+claude mcp add encode-ui -- npx -y encode-ui
 ```
 
 Verify with `claude mcp list` (→ `✔ Connected`) or `/mcp` in a session.
@@ -38,7 +38,7 @@ The same JSON block works anywhere that speaks stdio MCP — Claude Desktop's
 ```json
 {
   "mcpServers": {
-    "encode-ui-registry": {
+    "encode-ui": {
       "command": "npx",
       "args": ["-y", "encode-ui"]
     }
@@ -93,8 +93,8 @@ Two slash commands carry the long-form guidance, at zero token cost until invoke
 
 | Prompt | Slash form |
 |---|---|
-| `use-registry` | `/mcp__encode-ui-registry__use-registry` |
-| `setup-project` | `/mcp__encode-ui-registry__setup-project` |
+| `use-registry` | `/mcp__encode-ui__use-registry` |
+| `setup-project` | `/mcp__encode-ui__setup-project` |
 
 `use-registry` is the recurring workflow (discover → assess → install → customize);
 `setup-project` is the one-time consumer init — the `components.json` namespace, the OKLCH

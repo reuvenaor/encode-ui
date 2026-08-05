@@ -3,7 +3,7 @@
 // SERVER_INSTRUCTIONS is always loaded, so it stays lean; these prompts carry
 // the rich, multi-step guidance (workflow, dependency census, setup checklist)
 // and cost zero tokens until a user invokes one — in Claude Code they surface
-// as /mcp__encode-ui-registry__use-registry and …__setup-project.
+// as /mcp__encode-ui__use-registry and …__setup-project.
 //
 // Builders are pure (identity + optional arg in, string out) and read no DB —
 // testable against FIXTURE_ID with no environment. MCP prompt arguments are
@@ -22,7 +22,7 @@ export function buildUseRegistryPrompt(
   const scope = `@${id.scope}`
   return [
     `You are consuming the ${scope} component registry (${id.homepage}) through the`,
-    'encode-ui-registry MCP server. All its tools are read-only; installs go through',
+    'encode-ui MCP server. All its tools are read-only; installs go through',
     `\`npx shadcn@latest add ${scope}/<name>\`. Work this way:`,
     '',
     ...(goal ? [`Current goal: ${goal} — apply the steps below to it.`, ''] : []),
