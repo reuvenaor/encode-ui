@@ -1,0 +1,61 @@
+name: Bug report
+description: Something in the MCP server behaves incorrectly
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. If this is about a **component** in the registry rather than
+        the server itself, say so — it belongs upstream and we'll route it.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you asked your agent for, and what the server returned.
+      placeholder: |
+        Asked for "a scrolling logo strip"; search_components returned nothing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: "`npx -y encode-ui --version`"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: engine
+    attributes:
+      label: Engine
+      description: The `--registry-engine` flag, or `web` if you passed none.
+      options: [web (default), catalog, db]
+    validations:
+      required: true
+
+  - type: input
+    id: host
+    attributes:
+      label: MCP host
+      placeholder: Claude Code 2.1.x / Claude Desktop / Gemini CLI
+    validations:
+      required: true
+
+  - type: textarea
+    id: banner
+    attributes:
+      label: Startup banner
+      description: >
+        The server writes one line to stderr at startup naming the engine and where its
+        index came from. Your host keeps it in its MCP log. It identifies most problems on
+        its own — especially a stale index or a cache serving an old catalog.
+      render: text
