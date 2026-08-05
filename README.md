@@ -148,7 +148,10 @@ expand `~` and resolve relative values against the server's cwd.
 
 ## License
 
-MIT — see [LICENSE](LICENSE). This package ships a prebuilt index carrying component source,
-some of it adapted from other MIT-licensed projects; their notices travel with it in
-[NOTICE.md](NOTICE.md). The bundled `agent-index.json` is generated from the registry, so
-regenerating it is a maintainer task rather than something a clone can reproduce.
+MIT, Copyright (c) 2026 Reuven Naor — see [LICENSE](LICENSE). This package ships a prebuilt
+index carrying component source, some of it adapted from other MIT-licensed projects; their
+notices travel with it in [NOTICE.md](NOTICE.md). The bundled `agent-index.json` is generated
+from the registry, so regenerating it is a maintainer task rather than something a clone can
+reproduce.
+
+Questions, licensing or otherwise: <info@reuvenaor.com>.

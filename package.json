@@ -9,6 +9,7 @@
     "url": "git+https://github.com/reuvenaor/encode-ui.git"
   },
   "bugs": "https://github.com/reuvenaor/encode-ui/issues",
+  "author": "Reuven Naor <info@reuvenaor.com>",
   "license": "MIT",
   "bin": {
     "encode-ui": "dist/mcp.js"

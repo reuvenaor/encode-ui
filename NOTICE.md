@@ -1,5 +1,8 @@
 # NOTICE — third-party sources & attribution
 
+Encode UI is Copyright (c) 2026 **Reuven Naor** and licensed under the MIT License (see
+[LICENSE](LICENSE)). Questions about licensing or attribution: <info@reuvenaor.com>.
+
 The encode-ui registry ships **our own component library**: every item is authored or
 rewritten in-repo to the encode-ui design system (semantic OKLCH tokens, logical-direction
 RTL-safe utilities, React 19 ref-as-prop, `motion/react`, reduced-motion support,

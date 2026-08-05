@@ -4,7 +4,8 @@
 
 Please report security issues privately through
 [GitHub Security Advisories](https://github.com/reuvenaor/encode-ui/security/advisories/new)
-rather than opening a public issue. You should get a first response within a few days.
+rather than opening a public issue, or by email to <info@reuvenaor.com> if you would rather
+not use GitHub. You should get a first response within a few days.
 
 ## What this server can and cannot do
 
