@@ -84,6 +84,27 @@ has its foreground's OKLCH lightness moved just far enough to pass, chroma and h
 The vendored JSON stays as published; the clamp re-applies automatically on any re-sync, and a
 pair the clamp cannot repair fails the build.
 
+## Fonts (`public/fonts/`)
+
+The self-hosted font library (latin subsets, woff2, sourced via Fontsource's CDN mirror of
+Google Fonts) — every family under the **SIL Open Font License 1.1**, with the family's own
+`OFL.txt` (copyright line included) committed alongside its files:
+
+| Family | Directory | Upstream |
+|---|---|---|
+| Inter | `public/fonts/inter/` | https://github.com/rsms/inter |
+| Space Grotesk | `public/fonts/space-grotesk/` | https://github.com/floriankarsten/space-grotesk |
+| DM Sans | `public/fonts/dm-sans/` | https://github.com/googlefonts/dm-fonts |
+| JetBrains Mono | `public/fonts/jetbrains-mono/` | https://github.com/JetBrains/JetBrainsMono |
+| Space Mono | `public/fonts/space-mono/` | https://github.com/googlefonts/spacemono |
+| Playfair Display | `public/fonts/playfair-display/` | https://github.com/clauseggers/Playfair-Display |
+| Lora | `public/fonts/lora/` | https://github.com/cyrealtype/Lora-Cyrillic |
+| Fraunces | `public/fonts/fraunces/` | https://github.com/undercasetype/Fraunces |
+| Architects Daughter | `public/fonts/architects-daughter/` | https://fonts.google.com/specimen/Architects+Daughter |
+
+The manifest is `src/themes/fonts.json`; `scripts/build-themes.mjs` emits `@font-face` rules
+only for families a theme preset references.
+
 ## Icon metadata (Lucide)
 
 `src/lucide-icons.json` in the MCP package vendors **metadata only** — icon names, tags,
