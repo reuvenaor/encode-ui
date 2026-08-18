@@ -96,11 +96,21 @@ Google Fonts) — every family under the **SIL Open Font License 1.1**, with the
 | Space Grotesk | `public/fonts/space-grotesk/` | https://github.com/floriankarsten/space-grotesk |
 | DM Sans | `public/fonts/dm-sans/` | https://github.com/googlefonts/dm-fonts |
 | Instrument Sans | `public/fonts/instrument-sans/` | https://github.com/Instrument/instrument-sans |
+| Geist | `public/fonts/geist/` | https://github.com/vercel/geist-font |
+| Plus Jakarta Sans | `public/fonts/plus-jakarta-sans/` | https://github.com/tokotype/PlusJakartaSans |
+| Manrope | `public/fonts/manrope/` | https://github.com/sharanda/manrope |
+| Bricolage Grotesque | `public/fonts/bricolage-grotesque/` | https://github.com/ateliertriay/bricolage |
 | JetBrains Mono | `public/fonts/jetbrains-mono/` | https://github.com/JetBrains/JetBrainsMono |
 | Space Mono | `public/fonts/space-mono/` | https://github.com/googlefonts/spacemono |
+| Geist Mono | `public/fonts/geist-mono/` | https://github.com/vercel/geist-font |
+| IBM Plex Mono | `public/fonts/ibm-plex-mono/` | https://github.com/IBM/plex |
 | Playfair Display | `public/fonts/playfair-display/` | https://github.com/clauseggers/Playfair-Display |
 | Lora | `public/fonts/lora/` | https://github.com/cyrealtype/Lora-Cyrillic |
 | Fraunces | `public/fonts/fraunces/` | https://github.com/undercasetype/Fraunces |
+| Instrument Serif | `public/fonts/instrument-serif/` | https://github.com/Instrument/instrument-serif |
+| EB Garamond | `public/fonts/eb-garamond/` | https://github.com/octaviopardo/EBGaramond12 |
+| Newsreader | `public/fonts/newsreader/` | https://github.com/productiontype/Newsreader |
+| Bitter | `public/fonts/bitter/` | https://github.com/solmatas/BitterPro |
 | Architects Daughter | `public/fonts/architects-daughter/` | https://fonts.google.com/specimen/Architects+Daughter |
 
 The manifest is `src/themes/fonts.json`; `scripts/build-themes.mjs` emits `@font-face` rules
