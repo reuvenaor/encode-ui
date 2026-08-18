@@ -95,6 +95,7 @@ Google Fonts) — every family under the **SIL Open Font License 1.1**, with the
 | Inter | `public/fonts/inter/` | https://github.com/rsms/inter |
 | Space Grotesk | `public/fonts/space-grotesk/` | https://github.com/floriankarsten/space-grotesk |
 | DM Sans | `public/fonts/dm-sans/` | https://github.com/googlefonts/dm-fonts |
+| Instrument Sans | `public/fonts/instrument-sans/` | https://github.com/Instrument/instrument-sans |
 | JetBrains Mono | `public/fonts/jetbrains-mono/` | https://github.com/JetBrains/JetBrainsMono |
 | Space Mono | `public/fonts/space-mono/` | https://github.com/googlefonts/spacemono |
 | Playfair Display | `public/fonts/playfair-display/` | https://github.com/clauseggers/Playfair-Display |
