@@ -78,7 +78,11 @@ covered by the notice above). Palette data are colour tokens, not code.
 
 **Modified from upstream.** Twelve tweakcn palettes shipped a `--destructive` / foreground pair
 at 3.76:1, below the WCAG AA 4.5:1 text minimum; those pairs are darkened in `presets.json`.
-No other palette values are changed.
+Additionally, every text-bearing foreground/surface pair is **WCAG-AA-clamped at build time**
+(`scripts/theme-resolve.mjs`, run by `npm run themes` / `npm run manifest`): a pair under 4.5:1
+has its foreground's OKLCH lightness moved just far enough to pass, chroma and hue preserved.
+The vendored JSON stays as published; the clamp re-applies automatically on any re-sync, and a
+pair the clamp cannot repair fails the build.
 
 ## Icon metadata (Lucide)
 
