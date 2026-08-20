@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "encode-ui": {
+      "command": "npx",
+      "args": ["-y", "encode-ui"]
+    }
+  }
+}
