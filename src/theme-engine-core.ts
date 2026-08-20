@@ -666,6 +666,95 @@ export function resolvePreset(
   return out
 }
 
+/** The `cssVars` + `css` half of a `registry:theme` payload. */
+export interface ThemePayloadVars {
+  cssVars: { theme?: ModeVars; light: ModeVars; dark: ModeVars }
+  css?: { '@layer base': { body: { 'letter-spacing': string } } }
+}
+
+/**
+ * Split a preset into the shape a `registry:theme` payload ships: `theme` for
+ * the mode-invariant surface (fonts, tracking, easings, and the shadow ramp when
+ * both modes agree), `light`/`dark` for the colours, radius, overlay, and a
+ * per-mode ramp when dark re-anchors it.
+ *
+ * Lives here rather than in build-manifest.mjs because the MCP server's
+ * `validate_theme` hands a consumer the same block for their own globals.css —
+ * two implementations of this split would let the shipped payloads and the
+ * advised CSS disagree. Key order is load-bearing: it is the order the built
+ * payload emits.
+ *
+ * Takes an already-CLAMPED preset (the caller runs validatePresets then
+ * clampPresets), so what ships is what passed AA.
+ */
+export function themePayloadVars(
+  preset: PresetDef,
+  manifest: FontsManifest = {},
+): ThemePayloadVars {
+  const { light: pLight, dark: pDark } = preset
+  const resolved = resolvePreset(preset, manifest)
+
+  const colorsOf = (vars: ModeVars, withRadius: boolean): ModeVars => {
+    const out: ModeVars = {}
+    for (const tok of COLOR_TOKENS) {
+      const v = vars[tok]
+      if (v !== undefined) out[tok] = v
+    }
+    if (withRadius && vars.radius !== undefined) out.radius = vars.radius
+    return out
+  }
+
+  const light = colorsOf(pLight, true)
+  const dark = colorsOf(pDark, false)
+  const theme: ModeVars = {}
+
+  for (const key of ['font-sans', 'font-serif', 'font-mono']) {
+    const resolvedStack = resolved.light[key]
+    if (pLight[key] && resolvedStack !== undefined) theme[key] = resolvedStack
+  }
+  const tracking = resolved.light['tracking-normal']
+  if (pLight['letter-spacing'] && tracking !== undefined) theme['tracking-normal'] = tracking
+  for (const key of [
+    'ease-in',
+    'ease-out',
+    'ease-in-out',
+    'default-transition-duration',
+    'default-transition-timing-function',
+  ]) {
+    const authored = pLight[key]
+    if (authored !== undefined) theme[key] = authored
+  }
+  if (pLight.overlay !== undefined) light.overlay = pLight.overlay
+  if (pDark.overlay !== undefined) dark.overlay = pDark.overlay
+
+  // An authored knob in EITHER mode switches the whole ramp off Tailwind's
+  // literals; the ramp only rides in `theme` when both modes resolve alike.
+  const hasKnob = SHADOW_KNOBS.some((k) => k in pLight || k in pDark)
+  if (hasKnob) {
+    const modeInvariant = SHADOW_STEP_KEYS.every((k) => resolved.light[k] === resolved.dark[k])
+    for (const k of SHADOW_STEP_KEYS) {
+      const l = resolved.light[k]
+      const d = resolved.dark[k]
+      if (modeInvariant) {
+        if (l !== undefined) theme[k] = l
+      } else {
+        if (l !== undefined) light[k] = l
+        if (d !== undefined) dark[k] = d
+      }
+    }
+  }
+
+  const out: ThemePayloadVars = {
+    cssVars: Object.keys(theme).length > 0 ? { theme, light, dark } : { light, dark },
+  }
+  // Tracking is a Tailwind namespace, not an inherited property — the body rule
+  // is what actually applies it to the page.
+  if (pLight['letter-spacing']) {
+    out.css = { '@layer base': { body: { 'letter-spacing': 'var(--tracking-normal)' } } }
+  }
+  return out
+}
+
 // ---------------------------------------------------------------------------
 // Validation + clamping (pure — the fs loader wrapping these lives in
 // scripts/theme-resolve.mjs)

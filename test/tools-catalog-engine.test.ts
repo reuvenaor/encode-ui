@@ -10,6 +10,7 @@ import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js'
 import { loadCatalog } from '../src/catalog.ts'
 import { createCatalogEngine } from '../src/engine-catalog.ts'
 import { loadIconCatalog } from '../src/icons.ts'
+import { loadAnchors } from '../src/theme-anchors.ts'
 import { buildRegistryServer } from '../src/mcp/server.ts'
 import { GetComponentOutput, GetInstallCommandOutput } from '../src/mcp/schemas.ts'
 import { buildCatalogFixture } from './fixtures/catalog-fixture.ts'
@@ -20,6 +21,7 @@ const server = buildRegistryServer({
   engine,
   identity: engine.identity,
   icons: loadIconCatalog(),
+  anchors: loadAnchors(),
   catalog: loadCatalog(),
   catalogSync: 'in-sync',
 })
@@ -90,6 +92,7 @@ test('a detached install (no checkout) answers with the guided pointer', async (
     engine: detachedEngine,
     identity: detachedEngine.identity,
     icons: loadIconCatalog(),
+    anchors: loadAnchors(),
     catalog: loadCatalog(),
     catalogSync: 'in-sync',
   })

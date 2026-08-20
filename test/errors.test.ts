@@ -3,6 +3,7 @@ import { after, before, test } from 'node:test'
 import { Client } from '@modelcontextprotocol/sdk/client/index.js'
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js'
 import { loadIconCatalog } from '../src/icons.ts'
+import { loadAnchors } from '../src/theme-anchors.ts'
 import { suggestNames } from '../src/items.ts'
 import { ToolError, guarded } from '../src/mcp/result.ts'
 import { loadCatalog } from '../src/catalog.ts'
@@ -24,6 +25,7 @@ const server = buildRegistryServer({
   engine: createDbEngineFromDb(db),
   identity: FIXTURE_ID,
   icons: loadIconCatalog(),
+  anchors: loadAnchors(),
   catalog: loadCatalog(),
   catalogSync: 'in-sync',
 })

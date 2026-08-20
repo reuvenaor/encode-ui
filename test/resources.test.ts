@@ -8,6 +8,7 @@ import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js'
 import { loadCatalog } from '../src/catalog.ts'
 import { createDbEngineFromDb } from '../src/engine-db.ts'
 import { loadIconCatalog } from '../src/icons.ts'
+import { loadAnchors } from '../src/theme-anchors.ts'
 import { buildRegistryServer } from '../src/mcp/server.ts'
 import { CATALOG_RESOURCE_URI, renderCatalogMarkdown } from '../src/mcp/resources.ts'
 import { buildFixtureIndex, FIXTURE_ID } from './fixtures/index-fixture.ts'
@@ -23,6 +24,7 @@ const server = buildRegistryServer({
   engine: createDbEngineFromDb(db),
   identity: FIXTURE_ID,
   icons: loadIconCatalog(),
+  anchors: loadAnchors(),
   catalog: loadCatalog(),
   catalogSync: 'in-sync',
 })

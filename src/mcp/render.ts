@@ -7,6 +7,7 @@
 import { qualifiedName } from '../registry-id.ts'
 import type { RegistryIdentity } from '../registry-id.ts'
 import type {
+  ValidateThemeOutput,
   FindIconsOutput,
   FindSimilarOutput,
   GetComponentOutput,
@@ -216,5 +217,71 @@ export const renderIcons = (out: FindIconsOutput): string => {
     )
   }
   lines.push('', `lucide-react ${out.lucideVersion} · ${out.install}`)
+  return lines.join('\n')
+}
+
+/**
+ * The theme report as prose. Leads with the verdict, then only what needs
+ * action — a clean report should read short, because a wall of passing ratios
+ * buries the one line that matters.
+ */
+export function renderThemeReport(out: ValidateThemeOutput): string {
+  const lines: string[] = []
+  const verdict = out.errors.length > 0 ? 'INCOMPLETE' : out.valid ? 'PASSES' : 'FAILS'
+  lines.push(`${out.slug}: ${verdict}`)
+
+  if (out.errors.length > 0) {
+    lines.push('', `Schema — ${out.errors.length} error(s):`)
+    for (const e of out.errors.slice(0, 20)) lines.push(`  ${e}`)
+    if (out.errors.length > 20) lines.push(`  …and ${out.errors.length - 20} more.`)
+  }
+  for (const w of out.warnings) lines.push(`  warning: ${w}`)
+
+  const { residuals, clampLog, skips, pairs } = out.contrast
+  if (pairs.length > 0) {
+    const failing = pairs.filter((p) => !p.passes)
+    lines.push(
+      '',
+      `Contrast (AA ${out.contrast.target}:1) — ${pairs.length} pairs checked, ` +
+        `${failing.length} under target.`,
+    )
+    const worst = pairs[0]
+    if (worst) {
+      lines.push(`  Tightest: ${worst.mode} ${worst.foreground} on ${worst.surface} = ${worst.ratio}`)
+    }
+  }
+  if (clampLog.length > 0) {
+    lines.push(
+      `  The clamp would move ${clampLog.length} token(s). Beyond noise, that is a redesign ` +
+        'signal — the clamp repairs, it does not design:',
+    )
+    for (const l of clampLog.slice(0, 10)) lines.push(`    ${l}`)
+  }
+  if (residuals.length > 0) {
+    lines.push(`  UNREPAIRABLE — ${residuals.length} pair(s) stay under AA:`)
+    for (const r of residuals) lines.push(`    ${r}`)
+  }
+  if (skips.length > 0) lines.push(`  ${skips.length} value(s) unparsable, so unchecked.`)
+
+  const { anchor, nearest, verdict: uv } = out.uniqueness
+  lines.push('', `Uniqueness: ${uv}`)
+  if (anchor) {
+    lines.push(`  Anchor oklch(${anchor.l} ${anchor.c} ${anchor.h})`)
+    for (const n of nearest) {
+      lines.push(`  ${n.label}: ΔEok ${n.dEok}${n.dHue === null ? '' : `, hue Δ ${n.dHue}°`}`)
+    }
+  }
+  for (const note of out.uniqueness.notes) lines.push(`  ${note}`)
+
+  if (out.cssVars) {
+    const themeCount = Object.keys(out.cssVars.theme ?? {}).length
+    lines.push(
+      '',
+      `cssVars ready: ${Object.keys(out.cssVars.light).length} light, ` +
+        `${Object.keys(out.cssVars.dark).length} dark` +
+        (themeCount > 0 ? `, ${themeCount} mode-invariant` : '') +
+        '. Structured output carries the block.',
+    )
+  }
   return lines.join('\n')
 }

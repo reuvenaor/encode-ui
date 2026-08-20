@@ -351,3 +351,105 @@ export const GetInstallCommandOutput = z.object({
   unknown: z.array(z.string()),
 })
 export type GetInstallCommandOutput = z.infer<typeof GetInstallCommandOutput>
+
+// ── validate_theme ───────────────────────────────────────────────────────────
+
+/**
+ * A mode block: flat `token: value` CSS custom properties, minus the `--`.
+ * Deliberately an open record rather than an enum of the 32 colour tokens — the
+ * engine's own validator reports what is missing or unknown, in one voice, and a
+ * Zod rejection here would surface as a tool error instead of a report.
+ */
+const ModeBlock = z
+  .record(z.string(), z.string())
+  .describe('Flat token → value map, e.g. {"background": "oklch(0.98 0 0)", "radius": "0.5rem"}.')
+
+export const ValidateThemeInput = z
+  .object({
+    slug: z
+      .string()
+      .min(1)
+      .max(64)
+      .describe('Kebab-case brand name, used only to label the report.'),
+    light: ModeBlock.describe(
+      'Light mode: the 32 colour tokens plus radius, and optionally overlay, the six ' +
+        'shadow-* knobs, font-sans/-serif/-mono, letter-spacing, the ease-* / ' +
+        'default-transition-* motion keys, and spacing.',
+    ),
+    dark: ModeBlock.describe(
+      'Dark mode: the 32 colour tokens, re-derived rather than inverted. May also ' +
+        'override overlay and the shadow knobs; every other key is mode-invariant and ' +
+        'belongs in `light`.',
+    ),
+    character: z
+      .string()
+      .max(500)
+      .optional()
+      .describe('One-line description of the brand, carried into the report.'),
+  })
+  .strict()
+export type ValidateThemeInput = z.infer<typeof ValidateThemeInput>
+
+const ContrastPair = z
+  .object({
+    mode: z.string(),
+    foreground: z.string(),
+    surface: z.string(),
+    /** WCAG contrast ratio, 2 decimals. */
+    ratio: z.number(),
+    passes: z.boolean(),
+  })
+  .strict()
+
+const AnchorDistanceSchema = z
+  .object({
+    name: z.string(),
+    label: z.string(),
+    dEok: z.number(),
+    dHue: z.number().nullable(),
+  })
+  .strict()
+
+export const ValidateThemeOutput = z.object({
+  slug: z.string(),
+  /** True when the entry is schema-complete AND clamp-clean. */
+  valid: z.boolean(),
+  /** Schema failures — missing tokens, unknown keys, malformed values. */
+  errors: z.array(z.string()),
+  warnings: z.array(z.string()),
+  contrast: z.object({
+    target: z.number(),
+    /** Pairs still under AA after clamping — a redesign, never a shipping state. */
+    residuals: z.array(z.string()),
+    /** What the AA clamp WOULD move. Beyond noise means redesign, not accept. */
+    clampLog: z.array(z.string()),
+    /** Values the engine could not parse, so could not check. */
+    skips: z.array(z.string()),
+    /** Every checked pair, worst first. */
+    pairs: z.array(ContrastPair),
+  }),
+  uniqueness: z.object({
+    /** The candidate's light-mode primary, in OKLCH. Null when unparsable. */
+    anchor: z.object({ l: z.number(), c: z.number(), h: z.number() }).nullable(),
+    nearest: z.array(AnchorDistanceSchema),
+    verdict: z.string(),
+    /** True when the anchor sits in the 250–265° default-blue band. */
+    defaultBlue: z.boolean(),
+    notes: z.array(z.string()),
+  }),
+  /**
+   * The `cssVars` block a `registry:theme` payload ships — the same split the
+   * registry's own themes use, ready for a consumer's globals.css.
+   * Absent when the entry did not validate.
+   */
+  cssVars: z
+    .object({
+      theme: z.record(z.string(), z.string()).optional(),
+      light: z.record(z.string(), z.string()),
+      dark: z.record(z.string(), z.string()),
+    })
+    .nullable(),
+  /** The `@layer base` body rule, present only when letter-spacing is authored. */
+  css: z.record(z.string(), z.unknown()).nullable(),
+})
+export type ValidateThemeOutput = z.infer<typeof ValidateThemeOutput>
