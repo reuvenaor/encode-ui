@@ -17,6 +17,7 @@
   "files": [
     "dist",
     "agent-index.json",
+    "theme-anchors.json",
     "index.db",
     "README.md",
     "LICENSE",
