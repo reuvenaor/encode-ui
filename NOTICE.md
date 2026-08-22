@@ -100,6 +100,7 @@ Google Fonts) — every family under the **SIL Open Font License 1.1**, with the
 | Plus Jakarta Sans | `public/fonts/plus-jakarta-sans/` | https://github.com/tokotype/PlusJakartaSans |
 | Manrope | `public/fonts/manrope/` | https://github.com/sharanda/manrope |
 | Bricolage Grotesque | `public/fonts/bricolage-grotesque/` | https://github.com/ateliertriay/bricolage |
+| Figtree | `public/fonts/figtree/` | https://github.com/erikdkennedy/figtree |
 | JetBrains Mono | `public/fonts/jetbrains-mono/` | https://github.com/JetBrains/JetBrainsMono |
 | Space Mono | `public/fonts/space-mono/` | https://github.com/googlefonts/spacemono |
 | Geist Mono | `public/fonts/geist-mono/` | https://github.com/vercel/geist-font |

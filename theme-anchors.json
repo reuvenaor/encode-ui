@@ -48,8 +48,12 @@
     {"name":"kino","label":"Kino","anchor":{"l":0.57,"c":0.232,"h":28}},
     {"name":"cowl","label":"Cowl","anchor":{"l":0.442,"c":0.118,"h":228}},
     {"name":"grimoire","label":"Grimoire","anchor":{"l":0.375,"c":0.148,"h":21}},
-    {"name":"ensign","label":"Ensign","anchor":{"l":0.412,"c":0.206,"h":263}}
+    {"name":"ensign","label":"Ensign","anchor":{"l":0.412,"c":0.206,"h":263}},
+    {"name":"golden-hour-bay","label":"Golden Hour Bay","anchor":{"l":0.75,"c":0.155,"h":88}},
+    {"name":"golden-hour-shore","label":"Golden Hour Shore","anchor":{"l":0.8,"c":0.145,"h":90}},
+    {"name":"dusk-linen","label":"Dusk Linen","anchor":{"l":0.47,"c":0.088,"h":312}},
+    {"name":"stillwater","label":"Stillwater","anchor":{"l":0.51,"c":0.072,"h":168}}
   ],
-  "palettesSha256": "2c2de7494b9e0b534d4801f48956caf9bedcf3db81da5be1d366aacae24ad2d9",
+  "palettesSha256": "cbc835435117c8f7e23b8337336a22872a770c565fa1820bad503aad53f912a1",
   "engineCoreSha256": "d209b5999c1be784d269ef2331e502d0323b8c5eba03a363f9b818019db18068"
 }
