@@ -24,7 +24,7 @@ has no components.json yet, run `npx shadcn@latest init` first.
    }
 2. Token contract — the items style via semantic OKLCH tokens (--background,
    --primary, --chart-1..5 …). If the app CSS lacks them, install one of the
-   40 palettes: `npx shadcn@latest add @encode-ui/theme-<name>` (enumerate the
+   shipped palettes: `npx shadcn@latest add @encode-ui/theme-<name>` (enumerate the
    themes group with list_components to pick by mood; theme-zinc is neutral).
 3. Animation layer — ensure `@import 'tw-animate-css';` in the Tailwind CSS
    entry (`npm i -D tw-animate-css` if missing); base primitives use those

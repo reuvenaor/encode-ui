@@ -100,7 +100,9 @@ export function buildSetupProjectPrompt(id: RegistryIdentity, project?: string):
     '   }',
     '2. Token contract — the items style via semantic OKLCH tokens (--background,',
     '   --primary, --chart-1..5 …). If the app CSS lacks them, install one of the',
-    `   40 palettes: \`npx shadcn@latest add ${scope}/theme-<name>\` (enumerate the`,
+    // Countless on purpose: the palette catalog grows, and a literal here rotted
+    // once already (it said 40 while the registry shipped 53).
+    `   shipped palettes: \`npx shadcn@latest add ${scope}/theme-<name>\` (enumerate the`,
     '   themes group with list_components to pick by mood; theme-zinc is neutral).',
     "3. Animation layer — ensure `@import 'tw-animate-css';` in the Tailwind CSS",
     '   entry (`npm i -D tw-animate-css` if missing); base primitives use those',
