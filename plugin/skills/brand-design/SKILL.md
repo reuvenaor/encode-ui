@@ -145,7 +145,7 @@ Uniqueness is designed in before the first token, then measured after.
    dimensions differing from that neighbor.
 3. **The default-blue attractor** (~250–265°) is opt-in only: enter it when the brief
    demands it, and record the justification in the guide.
-4. **The crowded-wheel reality** (measured over a 48-palette catalogue): once a
+4. **The crowded-wheel reality** (measured over a catalogue of ~50 palettes): once a
    catalogue passes roughly forty anchors, NO chromatic hue clears 30° from every one of
    them — the widest gap anywhere is under 50°.
    The floor's operative form is therefore the tuple rule; the winning move is an arc

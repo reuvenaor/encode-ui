@@ -12,8 +12,19 @@ behind one surface. Consumer docs are in [README.md](README.md); contribution ru
 This repo ALSO holds a Claude Code plugin (`plugin/`) and the marketplace manifest that
 serves it (`.claude-plugin/marketplace.json`). MCP cannot distribute an agent or a skill —
 the spec has three server primitives, and skills-over-MCP is an in-review draft Claude Code
-declined to implement — so the plugin is how the `brand-theme-designer` agent and its two
-skills reach consumers. The plugin is NOT in the npm tarball (`files`); it ships by git.
+declined to implement — so the plugin is how the `brand-theme-designer` agent and the
+skills it drives reach consumers. The plugin is NOT in the npm tarball (`files`); it ships
+by git — which means a `plugin/` change is only real once it is on the DEFAULT branch of
+`reuvenaor/encode-ui`, because that is what `/plugin marketplace add` reads.
+
+**Only skills mint slash commands; agents never do.** An agent is reached by @-mention, by
+description, or by another agent's Agent tool — there is no `/name` form for one. So
+`plugin/skills/brand-theme-designer/` is a thin DISPATCHER skill that exists purely to give
+the agent a `/encode-ui:brand-theme-designer` shortcut. It holds no method: it checks the
+two prerequisites, collects a brief, launches the agent, and relays the report card. Sharing
+the agent's name is deliberate — the two live in different namespaces, and one name is what
+a user will type. Keep it thin; anything that looks like design guidance belongs in
+`brand-design` or in the agent.
 
 ## Commands
 

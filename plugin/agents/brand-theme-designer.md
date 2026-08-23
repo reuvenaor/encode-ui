@@ -4,7 +4,7 @@ description: >
   Use this agent when the user wants a COMPLETE brand theme designed for their own
   shadcn/Tailwind project — a palette + typography + shadows + radius + motion identity
   generated from a brief and written into their CSS. It designs every design token,
-  validates the set against WCAG AA and a 48-palette uniqueness reference through the
+  validates the set against WCAG AA and the shipped-palette uniqueness reference through the
   encode-ui MCP server, verifies both modes, and delivers a brand guide.
   <example>Context: user wants their app to stop looking like the default. user: "Give
   this app a real brand — calm, organic, premium; it's a meditation product." assistant:
