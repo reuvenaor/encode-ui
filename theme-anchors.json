@@ -52,8 +52,9 @@
     {"name":"golden-hour-bay","label":"Golden Hour Bay","anchor":{"l":0.75,"c":0.155,"h":88}},
     {"name":"golden-hour-shore","label":"Golden Hour Shore","anchor":{"l":0.8,"c":0.145,"h":90}},
     {"name":"dusk-linen","label":"Dusk Linen","anchor":{"l":0.47,"c":0.088,"h":312}},
-    {"name":"stillwater","label":"Stillwater","anchor":{"l":0.51,"c":0.072,"h":168}}
+    {"name":"stillwater","label":"Stillwater","anchor":{"l":0.51,"c":0.072,"h":168}},
+    {"name":"mossline","label":"Mossline","anchor":{"l":0.42,"c":0.085,"h":142}}
   ],
-  "palettesSha256": "cbc835435117c8f7e23b8337336a22872a770c565fa1820bad503aad53f912a1",
+  "palettesSha256": "ef6ebf4f33a31d390550331cb674d692ba00f527ea2d460eff4139b08b54ba27",
   "engineCoreSha256": "d209b5999c1be784d269ef2331e502d0323b8c5eba03a363f9b818019db18068"
 }
