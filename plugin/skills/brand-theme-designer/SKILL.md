@@ -16,9 +16,9 @@ The brief is `$ARGUMENTS`.
 Both must hold before you dispatch. Check them yourself; failing early is cheaper
 than failing inside the agent.
 
-1. **The `encode-ui` MCP server is connected.** The agent needs its `validate_theme`
+1. **The plugin's MCP server is connected.** The agent needs its `validate_theme`
    tool for the WCAG-AA clamp and the uniqueness math. Under this plugin the tool is
-   named `mcp__plugin_encode-ui_encode-ui__validate_theme`. If it is missing, say so
+   named `mcp__plugin_encode-ui_registry__validate_theme`. If it is missing, say so
    and stop — an unvalidated palette is guesswork, not a brand.
 2. **A `components.json` sits at the project root.** Without one the project never ran
    `shadcn init`, and nothing says which CSS file owns the tokens. Say so and stop.

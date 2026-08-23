@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "encode-ui": {
+    "registry": {
       "command": "npx",
       "args": ["-y", "encode-ui"]
     }

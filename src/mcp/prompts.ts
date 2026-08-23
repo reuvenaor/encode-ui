@@ -3,7 +3,10 @@
 // SERVER_INSTRUCTIONS is always loaded, so it stays lean; these prompts carry
 // the rich, multi-step guidance (workflow, dependency census, setup checklist)
 // and cost zero tokens until a user invokes one — in Claude Code they surface
-// as /mcp__encode-ui__use-registry and …__setup-project.
+// as /mcp__encode-ui__use-registry and …__setup-project. The plugin also wraps
+// them as /encode-ui:use-registry and /encode-ui:setup-project: those two
+// skills MIRROR this file's builders verbatim (identity from agent-index.json,
+// engine 'web'), and test/plugin-naming.test.ts reddens when they drift.
 //
 // Builders are pure (identity + optional arg in, string out) and read no DB —
 // testable against FIXTURE_ID with no environment. MCP prompt arguments are

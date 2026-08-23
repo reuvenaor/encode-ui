@@ -112,12 +112,13 @@ token contract, `tw-animate-css`, and a smoke test.
 ## Plugin
 
 **Claude Code only.** The plugin bundles this server together with a
-`brand-theme-designer` agent, the two skills it drives, and a slash-command shortcut that
-dispatches it, so one install gives you both component lookup and a way to brand your app:
+`brand-theme-designer` agent, the two skills it drives, a slash-command shortcut that
+dispatches it, and slash forms of the server's two prompts — so one install gives you
+both component lookup and a way to brand your app, all under the `/encode-ui:*` umbrella:
 
 ```
 /plugin marketplace add reuvenaor/encode-ui
-/plugin install encode-ui@encode-ui
+/plugin install encode-ui@encode-ui-theme-gen
 ```
 
 | What you get | How you reach it |
@@ -127,16 +128,20 @@ dispatches it, so one install gives you both component lookup and a way to brand
 | `brand-theme-designer` agent | designs a full brand from a brief, validates it, writes your CSS, and leaves a brand guide |
 | `/encode-ui:brand-design` | the method: personality tuple, OKLCH role mapping, dark re-derivation, shadow knobs, uniqueness floors |
 | `/encode-ui:theme-tokens` | where the tokens go in a stock `shadcn init` project, and the `@theme inline` wiring shadows and type need |
+| `/encode-ui:use-registry` | the component workflow — the `use-registry` prompt as a plugin command |
+| `/encode-ui:setup-project` | one-time consumer setup — the `setup-project` prompt as a plugin command |
 
-**Skills are slash commands; agents are not.** Only the three skills mint a `/` command.
+**Skills are slash commands; agents are not.** Only the five skills mint a `/` command.
 The agent is reached by the shortcut above, by `@agent-encode-ui:brand-theme-designer`, or
-by just describing what you want — there is no `/` form for an agent in Claude Code.
+by just describing what you want — there is no `/` form for an agent in Claude Code. The
+two prompt wrappers mirror [src/mcp/prompts.ts](src/mcp/prompts.ts) verbatim;
+`test/plugin-naming.test.ts` goes red if they drift.
 
 **Caveat — do not do both.** The plugin registers the server itself. If you already ran
 `claude mcp add encode-ui`, remove it first (`claude mcp remove encode-ui`), or the server
 runs twice and its tools appear under two names (bare, and
-`mcp__plugin_encode-ui_encode-ui__*`). Under the plugin the server shows in `/mcp` as
-`plugin:encode-ui:encode-ui`, so it sorts under `p` — it is renamed, not missing.
+`mcp__plugin_encode-ui_registry__*`). Under the plugin the server shows in `/mcp` as
+`plugin:encode-ui:registry`, so it sorts under `p` — it is renamed, not missing.
 
 **Not on Claude Code?** Plugins are a Claude Code format, but the pieces are not locked to
 it. `validate_theme` is a plain MCP tool that works in any host. And the skills are

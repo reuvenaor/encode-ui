@@ -26,6 +26,17 @@ the agent's name is deliberate — the two live in different namespaces, and one
 a user will type. Keep it thin; anything that looks like design guidance belongs in
 `brand-design` or in the agent.
 
+**The naming surface is three strings, pinned by `test/plugin-naming.test.ts`.** The
+plugin name (`plugin.json`) namespaces the skills and the agent (`/encode-ui:*`); the
+server key in `plugin/.mcp.json` is `registry`, so the bundled server lists as
+`plugin:encode-ui:registry` and its tools as `mcp__plugin_encode-ui_registry__*` (a key
+of `encode-ui` would stutter); the marketplace name (`marketplace.json`) is
+`encode-ui-theme-gen` — the `@…` half of the install line. `plugin/skills/use-registry/`
+and `plugin/skills/setup-project/` give the server's two prompts `/encode-ui:*` forms:
+they MIRROR `src/mcp/prompts.ts` verbatim (identity from `agent-index.json`, engine
+`web`), and the same test reddens on drift — regenerate the mirror body from the
+builders rather than hand-editing it.
+
 ## Commands
 
 ```bash
