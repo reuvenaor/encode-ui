@@ -35,7 +35,12 @@ of `encode-ui` would stutter); the marketplace name (`marketplace.json`) is
 and `plugin/skills/setup-project/` give the server's two prompts `/encode-ui:*` forms:
 they MIRROR `src/mcp/prompts.ts` verbatim (identity from `agent-index.json`, engine
 `web`), and the same test reddens on drift — regenerate the mirror body from the
-builders rather than hand-editing it.
+builders rather than hand-editing it. `plugin/commands/` holds one typed command per
+tool (`/encode-ui:search-components` … `/encode-ui:validate-theme`) because tools never
+appear in the slash menu; the set must track the tool surface one-to-one (same test).
+One versioning nuance: `plugin.json` MAY run ahead of `package.json` when only
+`plugin/` content changed — the npm tarball excludes `plugin/`, so there is nothing to
+republish; the two re-sync at the next real npm release.
 
 ## Commands
 

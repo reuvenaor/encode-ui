@@ -113,8 +113,9 @@ token contract, `tw-animate-css`, and a smoke test.
 
 **Claude Code only.** The plugin bundles this server together with a
 `brand-theme-designer` agent, the two skills it drives, a slash-command shortcut that
-dispatches it, and slash forms of the server's two prompts — so one install gives you
-both component lookup and a way to brand your app, all under the `/encode-ui:*` umbrella:
+dispatches it, slash forms of the server's two prompts, and a typed command for every
+tool — so one install gives you both component lookup and a way to brand your app, all
+under the `/encode-ui:*` umbrella:
 
 ```
 /plugin marketplace add reuvenaor/encode-ui
@@ -130,12 +131,13 @@ both component lookup and a way to brand your app, all under the `/encode-ui:*` 
 | `/encode-ui:theme-tokens` | where the tokens go in a stock `shadcn init` project, and the `@theme inline` wiring shadows and type need |
 | `/encode-ui:use-registry` | the component workflow — the `use-registry` prompt as a plugin command |
 | `/encode-ui:setup-project` | one-time consumer setup — the `setup-project` prompt as a plugin command |
+| the nine tools, typed | one command per tool: `/encode-ui:search-components`, `/encode-ui:find-similar`, `/encode-ui:get-component`, `/encode-ui:get-component-source`, `/encode-ui:list-groups`, `/encode-ui:list-components`, `/encode-ui:get-install-command`, `/encode-ui:validate-theme`, `/encode-ui:find-icons` |
 
-**Skills are slash commands; agents are not.** Only the five skills mint a `/` command.
-The agent is reached by the shortcut above, by `@agent-encode-ui:brand-theme-designer`, or
-by just describing what you want — there is no `/` form for an agent in Claude Code. The
-two prompt wrappers mirror [src/mcp/prompts.ts](src/mcp/prompts.ts) verbatim;
-`test/plugin-naming.test.ts` goes red if they drift.
+**Skills and commands are slash commands; agents are not.** The agent is reached by the
+shortcut above, by `@agent-encode-ui:brand-theme-designer`, or by just describing what
+you want — there is no `/` form for an agent in Claude Code. The two prompt wrappers
+mirror [src/mcp/prompts.ts](src/mcp/prompts.ts) verbatim, and the command set tracks
+the tool surface one-to-one; `test/plugin-naming.test.ts` goes red if either drifts.
 
 **Caveat — do not do both.** The plugin registers the server itself. If you already ran
 `claude mcp add encode-ui`, remove it first (`claude mcp remove encode-ui`), or the server

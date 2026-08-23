@@ -2,7 +2,7 @@
   "name": "encode-ui",
   "displayName": "encode-ui",
   "description": "Component lookup over the encode-ui shadcn registry, plus a brand-theme designer that validates your own theme against WCAG AA and every palette the registry ships.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": { "name": "Reuven Naor" },
   "homepage": "https://encode-ui.com",
   "repository": "https://github.com/reuvenaor/encode-ui",
