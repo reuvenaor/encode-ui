@@ -112,32 +112,38 @@ token contract, `tw-animate-css`, and a smoke test.
 ## Plugin
 
 **Claude Code only.** The plugin bundles this server together with a
-`brand-theme-designer` agent and the two skills it drives, so one install gives you both
-component lookup and a way to brand your app:
+`brand-theme-designer` agent, the two skills it drives, and a slash-command shortcut that
+dispatches it, so one install gives you both component lookup and a way to brand your app:
 
 ```
 /plugin marketplace add reuvenaor/encode-ui
 /plugin install encode-ui@encode-ui
 ```
 
-| What you get | |
+| What you get | How you reach it |
 |---|---|
 | the MCP server | registered automatically — see the caveat below |
-| `brand-theme-designer` | designs a full brand from a brief, validates it, writes your CSS, and leaves a brand guide |
-| `encode-ui:brand-design` | the method: personality tuple, OKLCH role mapping, dark re-derivation, shadow knobs, uniqueness floors |
-| `encode-ui:theme-tokens` | where the tokens go in a stock `shadcn init` project, and the `@theme inline` wiring shadows and type need |
+| `/encode-ui:brand-theme-designer` | the shortcut: hand it a brief, it runs the agent end to end |
+| `brand-theme-designer` agent | designs a full brand from a brief, validates it, writes your CSS, and leaves a brand guide |
+| `/encode-ui:brand-design` | the method: personality tuple, OKLCH role mapping, dark re-derivation, shadow knobs, uniqueness floors |
+| `/encode-ui:theme-tokens` | where the tokens go in a stock `shadcn init` project, and the `@theme inline` wiring shadows and type need |
+
+**Skills are slash commands; agents are not.** Only the three skills mint a `/` command.
+The agent is reached by the shortcut above, by `@agent-encode-ui:brand-theme-designer`, or
+by just describing what you want — there is no `/` form for an agent in Claude Code.
 
 **Caveat — do not do both.** The plugin registers the server itself. If you already ran
 `claude mcp add encode-ui`, remove it first (`claude mcp remove encode-ui`), or the server
 runs twice and its tools appear under two names (bare, and
-`mcp__plugin_encode-ui_encode-ui__*`).
+`mcp__plugin_encode-ui_encode-ui__*`). Under the plugin the server shows in `/mcp` as
+`plugin:encode-ui:encode-ui`, so it sorts under `p` — it is renamed, not missing.
 
 **Not on Claude Code?** Plugins are a Claude Code format, but the pieces are not locked to
-it. `validate_theme` is a plain MCP tool that works in any host. And both skills are
+it. `validate_theme` is a plain MCP tool that works in any host. And the skills are
 plain [Agent Skills](https://agentskills.io/specification) folders — copy
 `plugin/skills/brand-design` and `plugin/skills/theme-tokens` into wherever your tool
 reads skills from (Cursor, Codex, Copilot and others support the format). The agent
-definition is the one Claude-Code-specific piece.
+definition and its dispatcher skill are the Claude-Code-specific pieces.
 
 ## Engines
 
