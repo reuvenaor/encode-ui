@@ -28,7 +28,7 @@ test('the three name sources hold the shipped values', () => {
 
   const marketplace = readJson('.claude-plugin/marketplace.json')
   assert.equal(marketplace.name, 'encode-ui-theme-gen')
-  const entries = marketplace.plugins as Array<{ name: string; source: string }>
+  const entries = marketplace.plugins as { name: string; source: string }[]
   assert.equal(entries.length, 1)
   assert.equal(entries[0]?.name, 'encode-ui')
   assert.equal(entries[0]?.source, './plugin')
@@ -60,7 +60,7 @@ test('the prompt-wrapper skills mirror the builders verbatim', () => {
 
   // kind 'web' because plugin/.mcp.json passes no engine flag — the wrapper
   // must carry the web engine's honesty rules, not the db engine's.
-  const cases: Array<[string, string]> = [
+  const cases: [string, string][] = [
     ['plugin/skills/use-registry/SKILL.md', buildUseRegistryPrompt(id, undefined, 'web')],
     ['plugin/skills/setup-project/SKILL.md', buildSetupProjectPrompt(id, undefined)],
   ]
