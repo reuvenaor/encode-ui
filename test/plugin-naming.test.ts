@@ -8,7 +8,7 @@
 // exists?") before it was written down.
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { buildSetupProjectPrompt, buildUseRegistryPrompt } from '../src/mcp/prompts.ts'
@@ -51,6 +51,37 @@ test('the dispatcher skill names the tool the server key actually mints', () => 
     skill.includes(`mcp__plugin_encode-ui_${key}__validate_theme`),
     'dispatcher must name the namespaced validate_theme tool derived from the .mcp.json key',
   )
+})
+
+test('one typed command per tool, each naming the tool it calls', () => {
+  // The nine tools are model-invoked and can never sit in the slash menu, so
+  // plugin/commands/ gives each one a typed form (/encode-ui:<kebab-name>).
+  // The set must track the tool surface exactly — a tenth tool without a
+  // command, or a command for a removed tool, is drift.
+  const expected = [
+    'find-icons',
+    'find-similar',
+    'get-component',
+    'get-component-source',
+    'get-install-command',
+    'list-components',
+    'list-groups',
+    'search-components',
+    'validate-theme',
+  ]
+  const found = readdirSync(path.join(ROOT, 'plugin', 'commands'))
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => f.replace(/\.md$/, ''))
+    .sort()
+  assert.deepEqual(found, expected)
+  for (const name of expected) {
+    const body = read(`plugin/commands/${name}.md`)
+    const tool = name.replace(/-/g, '_')
+    assert.ok(
+      body.includes(`\`${tool}\``),
+      `plugin/commands/${name}.md must name the ${tool} tool it dispatches`,
+    )
+  }
 })
 
 test('the prompt-wrapper skills mirror the builders verbatim', () => {
