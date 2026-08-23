@@ -9,6 +9,7 @@
 import type { Catalog } from '../catalog.ts'
 import type { CatalogSyncStatus, RegistryEngine } from '../engine.ts'
 import type { IconCatalog } from '../icons.ts'
+import type { AnchorCatalog } from '../theme-anchors.ts'
 import type { RegistryIdentity } from '../registry-id.ts'
 
 export interface RegistryContext {
@@ -17,6 +18,12 @@ export interface RegistryContext {
   readonly identity: RegistryIdentity
   /** The vendored lucide catalog — loaded from dist, independent of the engine. */
   readonly icons: IconCatalog
+  /**
+   * The committed theme-anchors.json — every shipped palette's light-mode
+   * primary. Independent of the engine: validate_theme measures a candidate
+   * brand against the catalogue without touching the component index.
+   */
+  readonly anchors: AnchorCatalog
   /**
    * The committed agent-index.json, loaded ONCE at startup on BOTH engines
    * (fail-loud — a corrupt shipped artifact is a packaging bug). The catalog

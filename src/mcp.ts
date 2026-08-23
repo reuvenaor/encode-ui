@@ -41,11 +41,13 @@ import {
   parseServerFlags,
 } from './engine.ts'
 import { loadIconCatalog } from './icons.ts'
+import { loadAnchors } from './theme-anchors.ts'
 import { SERVER_NAME, SERVER_VERSION, buildRegistryServer } from './mcp/server.ts'
 import { loadWebCatalog } from './web-index.ts'
 import type { Catalog } from './catalog.ts'
 import type { CatalogSyncStatus, RegistryEngine } from './engine.ts'
 import type { IconCatalog } from './icons.ts'
+import type { AnchorCatalog } from './theme-anchors.ts'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 
@@ -211,10 +213,12 @@ async function main(): Promise<void> {
   }
 
   let icons: IconCatalog
+  let anchors: AnchorCatalog
   try {
     // Fail loud like the catalog load: the artifact ships inside dist/, so a
     // miss is a packaging bug — a degraded icon path would only hide it.
     icons = loadIconCatalog()
+    anchors = loadAnchors()
   } catch (err) {
     process.stderr.write(`[encode-ui-rag] ${(err as Error).message}\n`)
     engine.close()
@@ -260,6 +264,7 @@ async function main(): Promise<void> {
     engine,
     identity: engine.identity,
     icons,
+    anchors,
     catalog,
     catalogSync,
   })

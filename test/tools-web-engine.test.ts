@@ -12,6 +12,7 @@ import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js'
 import { parseCatalog } from '../src/catalog.ts'
 import { createWebEngine } from '../src/engine-web.ts'
 import { loadIconCatalog } from '../src/icons.ts'
+import { loadAnchors } from '../src/theme-anchors.ts'
 import { buildRegistryServer } from '../src/mcp/server.ts'
 import { SearchComponentsOutput } from '../src/mcp/schemas.ts'
 import { buildCatalogFixture, SPLIT_PARTS, SPLIT_SOURCE } from './fixtures/catalog-fixture.ts'
@@ -47,6 +48,7 @@ const server = buildRegistryServer({
   engine,
   identity: engine.identity,
   icons: loadIconCatalog(),
+  anchors: loadAnchors(),
   catalog,
   catalogSync: 'in-sync',
 })
@@ -71,9 +73,10 @@ const call = async (
 test('only the tool that egresses declares an open world', async () => {
   // openWorldHint is a policy signal: a host may auto-approve a closed-world
   // tool. On this engine get_component_source fetches from the deployed origin
-  // and carries ENCODE_UI_TOKEN when set — the other seven read memory.
+  // and carries ENCODE_UI_TOKEN when set — the other eight read memory, and
+  // validate_theme is pure math over vendored artifacts.
   const { tools } = await client.listTools()
-  assert.equal(tools.length, 8)
+  assert.equal(tools.length, 9)
   for (const t of tools) {
     assert.equal(t.annotations?.readOnlyHint, true, `${t.name} readOnlyHint`)
     assert.equal(
@@ -162,6 +165,7 @@ test('an HTML body from the origin answers as drift, never as a network fault', 
     engine: shellEngine,
     identity: shellEngine.identity,
     icons: loadIconCatalog(),
+    anchors: loadAnchors(),
     catalog,
     catalogSync: 'in-sync',
   })

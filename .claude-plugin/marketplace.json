@@ -1,0 +1,13 @@
+{
+  "name": "encode-ui-theme-gen",
+  "owner": { "name": "Reuven Naor", "url": "https://encode-ui.com" },
+  "description": "The encode-ui shadcn registry: an MCP server for component lookup, and a brand-theme designer for your own app.",
+  "plugins": [
+    {
+      "name": "encode-ui",
+      "source": "./plugin",
+      "category": "development",
+      "tags": ["shadcn", "ui", "registry", "design-tokens", "theming"]
+    }
+  ]
+}

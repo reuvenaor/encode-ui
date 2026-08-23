@@ -4,6 +4,10 @@ Component lookup over the [encode-ui registry](https://encode-ui.com) — 352 sh
 components, served to AI coding agents over MCP. Your agent searches the catalog, reads any
 component's source, and hands back the exact `npx shadcn@latest add` command.
 
+It also validates a brand theme of your own: `validate_theme` runs the WCAG-AA clamp and
+the uniqueness math the registry's 48 themes each passed, and hands back paste-ready CSS
+variables.
+
 Read-only by design. This server tells an agent *what* to install; installing stays on your
 own shadcn path, and nothing here touches your project.
 
@@ -29,6 +33,10 @@ claude mcp add encode-ui -- npx -y encode-ui
 ```
 
 Verify with `claude mcp list` (→ `✔ Connected`) or `/mcp` in a session.
+
+Or install the **plugin** instead, which brings the server plus a brand-theme designer —
+see [Plugin](#plugin) below. Pick one: the plugin registers the server itself, so doing
+both runs it twice.
 
 ### Claude Desktop, Gemini CLI, and other hosts
 
@@ -77,6 +85,7 @@ Everything else works without it.
 | `list_components` | Full membership of one group — the enumeration search can't be |
 | `get_install_command` | One `npx shadcn@latest add` line for a set of components |
 | `find_icons` | Verified lucide icon names — by concept, or to check a spelling (`Home` → `House`) |
+| `validate_theme` | Your own brand theme, checked: AA clamp, per-pair contrast, distance from 48 palettes, plus paste-ready `cssVars` |
 
 Every search and list hit carries `pure`: true when the item's whole install tree adds no
 npm packages beyond the shadcn substrate you already have. `search_components` and
@@ -99,6 +108,47 @@ Two slash commands carry the long-form guidance, at zero token cost until invoke
 `use-registry` is the recurring workflow (discover → assess → install → customize);
 `setup-project` is the one-time consumer init — the `components.json` namespace, the OKLCH
 token contract, `tw-animate-css`, and a smoke test.
+
+## Plugin
+
+**Claude Code only.** The plugin bundles this server together with a
+`brand-theme-designer` agent, the two skills it drives, a slash-command shortcut that
+dispatches it, and slash forms of the server's two prompts — so one install gives you
+both component lookup and a way to brand your app, all under the `/encode-ui:*` umbrella:
+
+```
+/plugin marketplace add reuvenaor/encode-ui
+/plugin install encode-ui@encode-ui-theme-gen
+```
+
+| What you get | How you reach it |
+|---|---|
+| the MCP server | registered automatically — see the caveat below |
+| `/encode-ui:brand-theme-designer` | the shortcut: hand it a brief, it runs the agent end to end |
+| `brand-theme-designer` agent | designs a full brand from a brief, validates it, writes your CSS, and leaves a brand guide |
+| `/encode-ui:brand-design` | the method: personality tuple, OKLCH role mapping, dark re-derivation, shadow knobs, uniqueness floors |
+| `/encode-ui:theme-tokens` | where the tokens go in a stock `shadcn init` project, and the `@theme inline` wiring shadows and type need |
+| `/encode-ui:use-registry` | the component workflow — the `use-registry` prompt as a plugin command |
+| `/encode-ui:setup-project` | one-time consumer setup — the `setup-project` prompt as a plugin command |
+
+**Skills are slash commands; agents are not.** Only the five skills mint a `/` command.
+The agent is reached by the shortcut above, by `@agent-encode-ui:brand-theme-designer`, or
+by just describing what you want — there is no `/` form for an agent in Claude Code. The
+two prompt wrappers mirror [src/mcp/prompts.ts](src/mcp/prompts.ts) verbatim;
+`test/plugin-naming.test.ts` goes red if they drift.
+
+**Caveat — do not do both.** The plugin registers the server itself. If you already ran
+`claude mcp add encode-ui`, remove it first (`claude mcp remove encode-ui`), or the server
+runs twice and its tools appear under two names (bare, and
+`mcp__plugin_encode-ui_registry__*`). Under the plugin the server shows in `/mcp` as
+`plugin:encode-ui:registry`, so it sorts under `p` — it is renamed, not missing.
+
+**Not on Claude Code?** Plugins are a Claude Code format, but the pieces are not locked to
+it. `validate_theme` is a plain MCP tool that works in any host. And the skills are
+plain [Agent Skills](https://agentskills.io/specification) folders — copy
+`plugin/skills/brand-design` and `plugin/skills/theme-tokens` into wherever your tool
+reads skills from (Cursor, Codex, Copilot and others support the format). The agent
+definition and its dispatcher skill are the Claude-Code-specific pieces.
 
 ## Engines
 

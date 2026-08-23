@@ -5,9 +5,37 @@ Guidance for Claude Code when working in this repository.
 ## What this is
 
 `encode-ui` on npm — a read-only MCP server giving coding agents component lookup over the
-[encode-ui shadcn registry](https://encode-ui.com). Eight tools, two prompts, three engines
+[encode-ui shadcn registry](https://encode-ui.com). Nine tools, two prompts, three engines
 behind one surface. Consumer docs are in [README.md](README.md); contribution rules in
 [CONTRIBUTING.md](CONTRIBUTING.md).
+
+This repo ALSO holds a Claude Code plugin (`plugin/`) and the marketplace manifest that
+serves it (`.claude-plugin/marketplace.json`). MCP cannot distribute an agent or a skill —
+the spec has three server primitives, and skills-over-MCP is an in-review draft Claude Code
+declined to implement — so the plugin is how the `brand-theme-designer` agent and the
+skills it drives reach consumers. The plugin is NOT in the npm tarball (`files`); it ships
+by git — which means a `plugin/` change is only real once it is on the DEFAULT branch of
+`reuvenaor/encode-ui`, because that is what `/plugin marketplace add` reads.
+
+**Only skills mint slash commands; agents never do.** An agent is reached by @-mention, by
+description, or by another agent's Agent tool — there is no `/name` form for one. So
+`plugin/skills/brand-theme-designer/` is a thin DISPATCHER skill that exists purely to give
+the agent a `/encode-ui:brand-theme-designer` shortcut. It holds no method: it checks the
+two prerequisites, collects a brief, launches the agent, and relays the report card. Sharing
+the agent's name is deliberate — the two live in different namespaces, and one name is what
+a user will type. Keep it thin; anything that looks like design guidance belongs in
+`brand-design` or in the agent.
+
+**The naming surface is three strings, pinned by `test/plugin-naming.test.ts`.** The
+plugin name (`plugin.json`) namespaces the skills and the agent (`/encode-ui:*`); the
+server key in `plugin/.mcp.json` is `registry`, so the bundled server lists as
+`plugin:encode-ui:registry` and its tools as `mcp__plugin_encode-ui_registry__*` (a key
+of `encode-ui` would stutter); the marketplace name (`marketplace.json`) is
+`encode-ui-theme-gen` — the `@…` half of the install line. `plugin/skills/use-registry/`
+and `plugin/skills/setup-project/` give the server's two prompts `/encode-ui:*` forms:
+they MIRROR `src/mcp/prompts.ts` verbatim (identity from `agent-index.json`, engine
+`web`), and the same test reddens on drift — regenerate the mirror body from the
+builders rather than hand-editing it.
 
 ## Commands
 
@@ -32,7 +60,15 @@ embedding model — they cannot run from a standalone clone.
 - **The db module loads dynamically.** A broken native `better-sqlite3` install must never
   break the zero-setup path.
 - **`agent-index.json` is generated upstream**, in the registry repo, and committed here. A
-  clone cannot regenerate it. Treat it as an input.
+  clone cannot regenerate it. Treat it as an input. **`src/theme-engine-core.ts` and
+  `theme-anchors.json` are the same kind of thing** — written by
+  `scripts/build-rag-theme-assets.mjs` on every `npm run themes` upstream, and pinned here
+  by digest in `test/theme-core.test.ts`. The core is a VERBATIM copy under a banner; it is
+  copyable only because it imports nothing, and the generator re-asserts that before writing.
+- **`validate_theme` is the odd tool out.** Every other tool answers about the catalog; this
+  one runs the AA clamp and the uniqueness math over a theme the CALLER wrote. It is pure
+  computation over those two vendored artifacts — no engine, no network — and a schema
+  failure comes back as a report, not a thrown error.
 - **`index.db` is gitignored.** `prepack` verifies a present one against `agent-index.json`'s
   source digests and refuses a stale one; absent, it packs a catalog-only tarball, which is a
   supported shape.
