@@ -1,6 +1,6 @@
 {
   "name": "encode-ui",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "type": "module",
   "description": "Component lookup over the encode-ui shadcn registry, as an MCP server. Zero setup; local embeddings, no API keys.",
   "homepage": "https://encode-ui.com",
