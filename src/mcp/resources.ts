@@ -1,5 +1,5 @@
 // The one MCP resource: the whole catalog as a compact markdown projection —
-// the deliberate "load everything" path (≈20k tokens for ~350 items) that
+// the deliberate "load everything" path (≈25k tokens for ~385 items) that
 // complements the cheap default (search_components, ~500 tokens a call).
 // Served on BOTH engines from the committed agent-index.json — the catalog
 // ctx already loaded fail-loud at startup, so registration takes it as an
@@ -99,7 +99,7 @@ export function registerCatalogResource(server: McpServer, ctx: RegistryContext)
       title: 'Full component catalog',
       description:
         `Every component in one view — name, aliases, description, flags, grouped by ` +
-        `taxonomy (${catalog.items.length} items, ≈20k tokens). Read it for browse/planning/` +
+        `taxonomy (${catalog.items.length} items, ≈25k tokens). Read it for browse/planning/` +
         `"what exists?" questions; prefer search_components for targeted lookups.`,
       mimeType: 'text/markdown',
     },

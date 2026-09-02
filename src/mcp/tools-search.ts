@@ -73,7 +73,7 @@ const SEARCH_DESCRIPTIONS: Record<RegistryEngine['kind'], string> = {
     'aliases ("modal", "toast") work best; loose behaviour phrasing may miss. Terms ' +
     'split on punctuation and single characters are dropped, so "toast?" and "a ' +
     'dialog." behave like the bare words. For ' +
-    'discovery and planning, read the catalog resource encode-ui://catalog (≈20k tokens) ' +
+    'discovery and planning, read the catalog resource encode-ui://catalog (≈25k tokens) ' +
     'once and judge the descriptions yourself. Every hit carries the exact install ' +
     'command. `score` is rank-derived (scoreKind "lexical"), comparable only within one ' +
     'result set, and `cosine` is always null — no score here is calibrated. A filter ' +
