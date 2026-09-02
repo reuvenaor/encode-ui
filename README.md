@@ -1,7 +1,7 @@
 # encode-ui
 
-Component lookup over the [encode-ui registry](https://encode-ui.com) — 352 shadcn
-components, served to AI coding agents over MCP. Your agent searches the catalog, reads any
+Component lookup over the [encode-ui registry](https://encode-ui.com) — 376 shadcn
+registry items (323 components + 53 OKLCH palettes), served to AI coding agents over MCP. Your agent searches the catalog, reads any
 component's source, and hands back the exact `npx shadcn@latest add` command.
 
 It also validates a brand theme of your own: `validate_theme` runs the WCAG-AA clamp and
