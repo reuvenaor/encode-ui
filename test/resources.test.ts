@@ -54,9 +54,13 @@ test('the catalog resource is advertised and reads back the whole registry', asy
   const itemLines = body.split('\n').filter((l) => l.startsWith('- ')).length
   assert.equal(itemLines, real.items.length, 'one line per item')
   assert.ok(body.includes('- sonner (aka toast, toaster, notification):'), 'aliases surface inline')
+  // A bloat canary, not a size cap: the view grows one line per item (≈250 bytes
+  // each today), so the budget is a per-item allowance rather than a fixed byte
+  // count that every new tranche would trip.
+  const budget = real.items.length * 300
   assert.ok(
-    Buffer.byteLength(body, 'utf8') < 100_000,
-    `catalog view grew to ${Buffer.byteLength(body, 'utf8')} bytes`,
+    Buffer.byteLength(body, 'utf8') < budget,
+    `catalog view grew to ${Buffer.byteLength(body, 'utf8')} bytes (budget ${budget})`,
   )
 })
 

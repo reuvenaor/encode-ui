@@ -23,7 +23,7 @@ const COMMON_MIDDLE = [
 const COMMON_TAIL = [
   '',
   'For a one-shot full-catalog view (browse, planning, "what exists?"), read the',
-  'catalog resource (encode-ui://catalog, ≈20k tokens) — prefer search for',
+  'catalog resource (encode-ui://catalog, ≈25k tokens) — prefer search for',
   'targeted lookups.',
   '',
   'Icons: the registry ships NO icon components — lucide-react is the icon layer.',
@@ -69,7 +69,7 @@ const WEB_INSTRUCTIONS = [
   '(web engine: index fetched live from the registry origin, zero-setup).',
   '',
   'Discovery works best in two steps: read the catalog resource',
-  '(encode-ui://catalog, ≈20k tokens — every item with description and flags)',
+  '(encode-ui://catalog, ≈25k tokens — every item with description and flags)',
   'ONCE and judge the descriptions yourself; use search_components as a fast',
   'plain filter for names, curated aliases ("modal", "toast"), and keywords —',
   'it is substring matching, not semantic search, so loose behaviour phrasing',
