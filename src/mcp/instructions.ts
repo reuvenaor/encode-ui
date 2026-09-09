@@ -30,7 +30,7 @@ const COMMON_TAIL = [
   'Call find_icons for verified names instead of guessing imports; it resolves',
   'legacy aliases (Home → House) and searches by concept over curated tags.',
   '',
-  'Theming: validate_theme is the one tool that answers about the CONSUMER\'s own',
+  "Theming: validate_theme is the one tool that answers about the CONSUMER's own",
   'design, not about this catalog. Give it a candidate brand — the 32 colour',
   'tokens in both modes, plus radius, fonts, shadows, tracking and motion — and it',
   'returns the WCAG-AA clamp report, every foreground/surface ratio, the OKLab',

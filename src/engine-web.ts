@@ -133,9 +133,7 @@ export function createWebEngine(catalog: Catalog, opts: WebEngineOptions): Regis
 
     const hits: SearchHit[] = []
     if (exactOk !== null) {
-      hits.push(
-        toHit(exactOk.item, 1 / 61, [exactOk.viaAlias === null ? 'name:web' : 'alias:web']),
-      )
+      hits.push(toHit(exactOk.item, 1 / 61, [exactOk.viaAlias === null ? 'name:web' : 'alias:web']))
     }
     for (const s of scored) {
       if (hits.length >= k) break

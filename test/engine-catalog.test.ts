@@ -248,7 +248,11 @@ test('an explicitly named origin outranks a working checkout', async () => {
   // checkout on disk is mid-edit; silently preferring the checkout would make
   // the flag a no-op.
   const remote = () => Promise.resolve([{ path: 'remote.tsx', code: 'from the origin' }])
-  const preferring = createCatalogEngine(catalog, { registryRoot: root, remote, preferRemote: true })
+  const preferring = createCatalogEngine(catalog, {
+    registryRoot: root,
+    remote,
+    preferRemote: true,
+  })
   assert.deepEqual(await preferring.sourceOf('fixture-button', 'source'), [
     { path: 'remote.tsx', code: 'from the origin' },
   ])

@@ -96,7 +96,10 @@ test('a web corpus served off disk says so, and a live one stays silent', () => 
   assert.match(seeded, /BUNDLED with this package/)
   assert.match(seeded, /source bodies cannot be fetched/)
 
-  for (const quiet of [renderCatalogMarkdown(real, 'in-sync', 'remote'), renderCatalogMarkdown(real)]) {
+  for (const quiet of [
+    renderCatalogMarkdown(real, 'in-sync', 'remote'),
+    renderCatalogMarkdown(real),
+  ]) {
     assert.ok(!quiet.includes('local disk cache'))
     assert.ok(!quiet.includes('BUNDLED'))
   }

@@ -53,7 +53,11 @@ test('the anchor records hash to what theme-anchors.json recorded', () => {
 
 test('the core stays dependency-free — the reason it can be vendored at all', () => {
   const specifiers = readFileSync(CORE, 'utf8').match(/^\s*(?:import|export)\s+.*\bfrom\b.*$/gm)
-  assert.equal(specifiers, null, `vendored core must import nothing; found: ${specifiers?.join(', ')}`)
+  assert.equal(
+    specifiers,
+    null,
+    `vendored core must import nothing; found: ${specifiers?.join(', ')}`,
+  )
 })
 
 test('every anchor is a plausible OKLCH point', () => {
@@ -116,7 +120,8 @@ test('a complete entry resolves and clamps to an AA-clean surface', () => {
   // no-op. That makes this a regression pin on clamp *inaction*, which is what
   // a well-designed brand entry should also produce.
   const mode: Record<string, string> = {}
-  for (const tok of COLOR_TOKENS) mode[tok] = tok.endsWith('-foreground') ? 'oklch(0 0 0)' : 'oklch(1 0 0)'
+  for (const tok of COLOR_TOKENS)
+    mode[tok] = tok.endsWith('-foreground') ? 'oklch(0 0 0)' : 'oklch(1 0 0)'
   mode.foreground = 'oklch(0 0 0)'
   const entry = { character: 'probe', light: { ...mode, radius: '0.5rem' }, dark: { ...mode } }
 

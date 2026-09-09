@@ -69,7 +69,7 @@ export function registerThemeTools(server: McpServer, ctx: RegistryContext): voi
         'beyond noise means redesign, not accept), and UNIQUENESS (OKLab ΔE and hue distance ' +
         `from all ${ctx.anchors.palettes.length} shipped palettes, so a brand does not land ` +
         'on a stock theme). Returns the `cssVars` block in the exact shape a registry:theme ' +
-        'payload ships, ready for a consumer\'s globals.css. Pure computation: nothing is ' +
+        "payload ships, ready for a consumer's globals.css. Pure computation: nothing is " +
         'written, nothing is fetched. Font keys must be FULL CSS stacks with fallbacks ' +
         '("Inter, ui-sans-serif, system-ui, sans-serif"), since this server cannot host ' +
         'font files for you.',

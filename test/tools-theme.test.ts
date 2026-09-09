@@ -85,7 +85,12 @@ test('a shipped theme reproduces the numbers in its own brand guide', async () =
   light['font-sans'] = 'Manrope, ui-sans-serif, system-ui, sans-serif'
   light['font-mono'] = "'IBM Plex Mono', ui-monospace, monospace"
 
-  const { out } = await call({ slug: 'ensign', character: ensign.character, light, dark: ensign.dark })
+  const { out } = await call({
+    slug: 'ensign',
+    character: ensign.character,
+    light,
+    dark: ensign.dark,
+  })
   assert.ok(out)
   assert.equal(out.valid, true)
   assert.deepEqual(out.errors, [])
@@ -115,7 +120,11 @@ test('a shipped theme reproduces the numbers in its own brand guide', async () =
 // ── reports, not throws ──────────────────────────────────────────────────────
 
 test('an incomplete entry reports its errors instead of failing the call', async () => {
-  const { isError, out } = await call({ slug: 'probe', light: { primary: 'oklch(0.5 0.2 30)' }, dark: {} })
+  const { isError, out } = await call({
+    slug: 'probe',
+    light: { primary: 'oklch(0.5 0.2 30)' },
+    dark: {},
+  })
   assert.equal(isError, false, 'a schema failure is an answer, not a tool error')
   assert.ok(out)
   assert.equal(out.valid, false)
@@ -148,8 +157,15 @@ test('every measured pair carries its ratio, worst first', async () => {
   assert.ok(out.contrast.pairs.length > 20, `only ${out.contrast.pairs.length} pairs measured`)
   assert.ok(out.contrast.pairs.every((p) => p.passes === p.ratio >= 4.5))
   const ratios = out.contrast.pairs.map((p) => p.ratio)
-  assert.deepEqual(ratios, [...ratios].sort((a, b) => a - b), 'worst first')
-  assert.ok(out.contrast.pairs.some((p) => p.mode === 'dark'), 'both modes are checked')
+  assert.deepEqual(
+    ratios,
+    [...ratios].sort((a, b) => a - b),
+    'worst first',
+  )
+  assert.ok(
+    out.contrast.pairs.some((p) => p.mode === 'dark'),
+    'both modes are checked',
+  )
 })
 
 test('a bare font family is refused with the fix in the message', async () => {
