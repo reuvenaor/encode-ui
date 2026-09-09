@@ -39,8 +39,12 @@ test('the three name sources hold the shipped values', () => {
   // host-derived names (`plugin:encode-ui:registry`,
   // `mcp__plugin_encode-ui_registry__*`). `encode-ui` here would stutter.
   assert.deepEqual(Object.keys(servers), ['registry'])
-  // Flag-free on purpose: the plugin runs the zero-setup web engine.
-  assert.deepEqual(servers.registry, { command: 'npx', args: ['-y', 'encode-ui'] })
+  // The plugin opts into the db engine: the package ships index.db, so the
+  // plugin gets semantic search instead of the web engine's name filter.
+  assert.deepEqual(servers.registry, {
+    command: 'npx',
+    args: ['-y', 'encode-ui', '--registry-engine', 'db'],
+  })
 })
 
 test('the dispatcher skill names the tool the server key actually mints', () => {
@@ -89,10 +93,10 @@ test('the prompt-wrapper skills mirror the builders verbatim', () => {
   const registry = idx.registry as { scope: string; homepage: string }
   const id = { scope: registry.scope, homepage: registry.homepage }
 
-  // kind 'web' because plugin/.mcp.json passes no engine flag — the wrapper
-  // must carry the web engine's honesty rules, not the db engine's.
+  // kind 'db' because plugin/.mcp.json passes --registry-engine db — the
+  // wrapper must carry the db engine's rules, not the web engine's honesty caveat.
   const cases: [string, string][] = [
-    ['plugin/skills/use-registry/SKILL.md', buildUseRegistryPrompt(id, undefined, 'web')],
+    ['plugin/skills/use-registry/SKILL.md', buildUseRegistryPrompt(id, undefined, 'db')],
     ['plugin/skills/setup-project/SKILL.md', buildSetupProjectPrompt(id, undefined)],
   ]
   for (const [rel, expected] of cases) {
