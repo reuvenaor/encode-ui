@@ -139,14 +139,14 @@ export function registerCatalogTools(server: McpServer, ctx: RegistryContext): v
           throw new ToolError(
             ctx.engine.kind === 'web'
               ? `The registry origin has no ${part} payload for "${canonical}" (404) — the ` +
-                'fetched index may be newer than the deployment (or this origin has not ' +
-                'published demo payloads yet). Retry later, or install directly: ' +
-                detail.installCmd
+                  'fetched index may be newer than the deployment (or this origin has not ' +
+                  'published demo payloads yet). Retry later, or install directly: ' +
+                  detail.installCmd
               : `The registry checkout is present but the ${part} file for "${canonical}" is ` +
-                'missing or renamed — the checkout has drifted from the catalog since it ' +
-                'was generated. The server operator can realign them by running ' +
-                '`npm run registry:build` at the registry root. Meanwhile: fetch the payload ' +
-                `at ${ctx.identity.homepage}/r/${canonical}.json, or install directly: ${detail.installCmd}`,
+                  'missing or renamed — the checkout has drifted from the catalog since it ' +
+                  'was generated. The server operator can realign them by running ' +
+                  '`npm run registry:build` at the registry root. Meanwhile: fetch the payload ' +
+                  `at ${ctx.identity.homepage}/r/${canonical}.json, or install directly: ${detail.installCmd}`,
           )
         }
         if (files === null) {

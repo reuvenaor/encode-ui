@@ -82,11 +82,7 @@ export function renderSearch(id: RegistryIdentity, out: SearchComponentsOutput):
 export function renderSimilar(id: RegistryIdentity, out: FindSimilarOutput): string {
   if (out.neighbours.length === 0) return `Nothing in the registry is close to "${out.seed}".`
   const note =
-    out.engine === 'catalog'
-      ? SIMILAR_CATALOG_NOTE
-      : out.engine === 'web'
-        ? SIMILAR_WEB_NOTE
-        : ''
+    out.engine === 'catalog' ? SIMILAR_CATALOG_NOTE : out.engine === 'web' ? SIMILAR_WEB_NOTE : ''
   return `Nearest to ${qualifiedName(id, out.seed)}:\n\n${hitLines(id, out.neighbours)}${note}`
 }
 
@@ -247,7 +243,9 @@ export function renderThemeReport(out: ValidateThemeOutput): string {
     )
     const worst = pairs[0]
     if (worst) {
-      lines.push(`  Tightest: ${worst.mode} ${worst.foreground} on ${worst.surface} = ${worst.ratio}`)
+      lines.push(
+        `  Tightest: ${worst.mode} ${worst.foreground} on ${worst.surface} = ${worst.ratio}`,
+      )
     }
   }
   if (clampLog.length > 0) {

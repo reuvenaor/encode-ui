@@ -77,7 +77,7 @@ export function buildUseRegistryPrompt(
         : [
             'Honesty rules: this install runs the web engine — search_components is a',
             'plain substring filter over the fetched registry index (scoreKind "lexical",',
-            '`cosine` null), so step 1\'s behaviour-language advice applies to the semantic',
+            "`cosine` null), so step 1's behaviour-language advice applies to the semantic",
             'db engine only: here prefer names/aliases/keywords, or read the catalog',
             'resource (encode-ui://catalog) and judge the descriptions yourself; enumerate',
             'with list_components to prove absence, never read scores as calibrated.',

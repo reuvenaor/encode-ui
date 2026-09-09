@@ -265,7 +265,10 @@ test('a flag the selected engine would silently ignore is a usage error', () => 
     parsed('--registry-engine', 'catalog', '--registry-root', 'checkout').registryRoot,
     path.join(CWD, 'checkout'),
   )
-  assert.equal(parsed('--registry-engine', 'db', '--model-dir', '~/m').modelDir, path.join(HOME, 'm'))
+  assert.equal(
+    parsed('--registry-engine', 'db', '--model-dir', '~/m').modelDir,
+    path.join(HOME, 'm'),
+  )
   assert.equal(parsed('--registry-index', '/i.db', '--lexical-only').lexicalOnly, true)
 })
 

@@ -58,7 +58,9 @@ test('built payloads satisfy their declared schemas', async () => {
   assert.doesNotThrow(() =>
     SearchComponentsOutput.parse(buildSearchOutput('db', 'widget', hits, degraded, GATED)),
   )
-  assert.doesNotThrow(() => FindSimilarOutput.parse(buildSimilarOutput('db', 'alpha-button', hits, GATED)))
+  assert.doesNotThrow(() =>
+    FindSimilarOutput.parse(buildSimilarOutput('db', 'alpha-button', hits, GATED)),
+  )
   assert.doesNotThrow(() =>
     ListGroupsOutput.parse(buildGroupsOutput('db', [{ slug: 'forms', label: 'Forms', count: 31 }])),
   )
@@ -72,7 +74,10 @@ test('built payloads satisfy their declared schemas', async () => {
 test('scoreKind distinguishes a fusion rank from a cosine similarity', async () => {
   const { hits } = await search(db, 'widget', { k: 1 })
   assert.equal(buildSearchOutput('db', 'widget', hits, false, GATED).hits[0]?.scoreKind, 'rrf')
-  assert.equal(buildSimilarOutput('db', 'alpha-button', hits, GATED).neighbours[0]?.scoreKind, 'cosine')
+  assert.equal(
+    buildSimilarOutput('db', 'alpha-button', hits, GATED).neighbours[0]?.scoreKind,
+    'cosine',
+  )
 })
 
 test('counts agree with the arrays they describe', async () => {

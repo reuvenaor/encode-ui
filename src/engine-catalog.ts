@@ -28,7 +28,12 @@ import { resolveComponentName } from './catalog.ts'
 import { DEFAULT_K } from './engine.ts'
 import { catalogCore, payloadFiles, structuralSimilar, toHit } from './engine-shared.ts'
 import type { Catalog, CatalogItem } from './catalog.ts'
-import type { ComponentSourcePart, EngineSearchOptions, RegistryEngine, SourceResult } from './engine.ts'
+import type {
+  ComponentSourcePart,
+  EngineSearchOptions,
+  RegistryEngine,
+  SourceResult,
+} from './engine.ts'
 import type { RemoteSource } from './remote-source.ts'
 import type { SearchHit } from './items.ts'
 
@@ -91,10 +96,7 @@ export interface CatalogEngineOptions {
  * Ranked offline retrieval over the committed artifact. Bodies come from the
  * surrounding checkout, or from the registry origin when there is none.
  */
-export function createCatalogEngine(
-  catalog: Catalog,
-  opts: CatalogEngineOptions,
-): RegistryEngine {
+export function createCatalogEngine(catalog: Catalog, opts: CatalogEngineOptions): RegistryEngine {
   const { registryRoot, remote = null, preferRemote = false } = opts
   const core = catalogCore(catalog)
 

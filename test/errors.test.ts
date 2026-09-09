@@ -88,7 +88,10 @@ test("guarded replaces an unexpected error with the ENGINE'S OWN remedy", async 
   await assert.rejects(guarded('t', 'web', boom), (err: Error) => {
     assert.ok(err instanceof ToolError)
     assert.ok(!err.message.includes('npm run verify'), 'verify is db-only advice')
-    assert.ok(!err.message.includes('ships with the package'), 'bundled-artifact advice is catalog-only')
+    assert.ok(
+      !err.message.includes('ships with the package'),
+      'bundled-artifact advice is catalog-only',
+    )
     assert.match(err.message, /network/, 'web remedy points at connectivity')
     assert.match(err.message, /--registry-url/, 'and names the override flag')
     assert.ok(!err.message.includes('/Users/'), 'paths must not reach the model')

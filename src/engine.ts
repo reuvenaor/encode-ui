@@ -82,7 +82,9 @@ export const envText = (raw: string | undefined): string | undefined => {
  * fetch a path that cannot exist — `https://x.com/?ref=1` + `/agent-index.json`
  * asks the origin for `?ref=1/agent-index.json` and gets the home page back.
  */
-export function resolveUrlValue(raw: string | undefined): { url: string } | { error: string } | null {
+export function resolveUrlValue(
+  raw: string | undefined,
+): { url: string } | { error: string } | null {
   const value = envText(raw)
   if (value === undefined) return null
   let parsed: URL
@@ -298,7 +300,9 @@ export function orderGroups<T extends GroupRow & { isTheme: boolean }>(
   return [...rows]
     .sort(
       (a, b) =>
-        Number(a.isTheme) - Number(b.isTheme) || b.count - a.count || compareStrings(a.slug, b.slug),
+        Number(a.isTheme) - Number(b.isTheme) ||
+        b.count - a.count ||
+        compareStrings(a.slug, b.slug),
     )
     .map(({ slug, label, count }) => ({ slug, label, count }))
 }
@@ -544,7 +548,8 @@ export function parseServerFlags(
     return `${head} — drop ${flag}, or pass --registry-engine ${needs}`
   }
 
-  if (root.ok !== undefined && engine !== 'catalog') return fail(scopeError('--registry-root', 'catalog'))
+  if (root.ok !== undefined && engine !== 'catalog')
+    return fail(scopeError('--registry-root', 'catalog'))
   if (model.ok !== undefined && engine !== 'db') return fail(scopeError('--model-dir', 'db'))
   if (lexicalOnly && engine !== 'db') return fail(scopeError('--lexical-only', 'db'))
 

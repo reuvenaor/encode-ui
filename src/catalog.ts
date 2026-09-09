@@ -108,7 +108,11 @@ const REGENERATE = 'The catalog ships with the package — update it to get a fr
  * advice, which is wrong for a body that came off the wire: nobody debugging a
  * fetched index can fix it by running a build here.
  */
-export function parseCatalog(raw: unknown, sourceLabel: string, remedy: string = REGENERATE): Catalog {
+export function parseCatalog(
+  raw: unknown,
+  sourceLabel: string,
+  remedy: string = REGENERATE,
+): Catalog {
   const parsed = AgentIndexSchema.safeParse(raw)
   if (!parsed.success) {
     throw new Error(

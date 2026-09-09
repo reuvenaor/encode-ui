@@ -65,7 +65,10 @@ test('an exact name or curated alias short-circuits to rank 1', async () => {
 test('filtering is AND over substring terms — every term must land', async () => {
   const engine = makeEngine()
   const both = await engine.search('popup window')
-  assert.ok(both.hits.some((h) => h.name === 'fixture-dialog'), 'keyword phrase matches')
+  assert.ok(
+    both.hits.some((h) => h.name === 'fixture-dialog'),
+    'keyword phrase matches',
+  )
 
   const miss = await engine.search('popup zzznothing')
   assert.equal(miss.hits.length, 0, 'one dead term kills the AND match')
@@ -204,9 +207,9 @@ test('a 200 that is not JSON reads as drift, not as a fault', async () => {
 })
 
 test('gated items short-circuit without a token and send the bearer with one', async () => {
-  const raw = JSON.parse(
-    readFileSync(path.join(fixture.root, 'agent-index.json'), 'utf8'),
-  ) as { items: { name: string; gated: boolean }[] }
+  const raw = JSON.parse(readFileSync(path.join(fixture.root, 'agent-index.json'), 'utf8')) as {
+    items: { name: string; gated: boolean }[]
+  }
   raw.items.find((i) => i.name === 'fixture-button')!.gated = true
   const gatedCatalog = parseCatalog(raw, 'gated-fixture')
 
@@ -234,8 +237,7 @@ test('gated items short-circuit without a token and send the bearer with one', a
   const refused = createWebEngine(gatedCatalog, {
     baseUrl: BASE,
     indexSource: 'remote',
-    fetchImpl: () =>
-      Promise.resolve(new Response('{"error":"sign_in_required"}', { status: 401 })),
+    fetchImpl: () => Promise.resolve(new Response('{"error":"sign_in_required"}', { status: 401 })),
     token: 'expired',
   })
   assert.equal(await refused.sourceOf('fixture-button', 'source'), 'gated')

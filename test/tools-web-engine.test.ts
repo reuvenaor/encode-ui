@@ -128,7 +128,10 @@ test('a gated item is flagged before the caller spends a source call', async () 
   assert.equal((detail.structuredContent as { gated?: boolean }).gated, true)
   assert.match((detail.content as { text?: string }[])[0]?.text ?? '', /registry account/)
 
-  const free = await client.callTool({ name: 'get_component', arguments: { name: 'fixture-button' } })
+  const free = await client.callTool({
+    name: 'get_component',
+    arguments: { name: 'fixture-button' },
+  })
   assert.equal((free.structuredContent as { gated?: boolean }).gated, false)
   assert.ok(!((free.content as { text?: string }[])[0]?.text ?? '').includes('gated'))
 })
@@ -158,8 +161,7 @@ test('an HTML body from the origin answers as drift, never as a network fault', 
   const shellEngine = createWebEngine(catalog, {
     baseUrl: BASE,
     indexSource: 'remote',
-    fetchImpl: () =>
-      Promise.resolve(new Response('<!doctype html><html></html>', { status: 200 })),
+    fetchImpl: () => Promise.resolve(new Response('<!doctype html><html></html>', { status: 200 })),
   })
   const shellServer = buildRegistryServer({
     engine: shellEngine,
