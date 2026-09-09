@@ -51,9 +51,5 @@ Styling: items style ONLY via semantic OKLCH tokens (--primary, --background,
 --chart-1..5). Dark mode is the `.dark` class. If the app lacks the token
 contract, run the setup-project prompt first.
 
-Honesty rules: this install runs the web engine — search_components is a
-plain substring filter over the fetched registry index (scoreKind "lexical",
-`cosine` null), so step 1's behaviour-language advice applies to the semantic
-db engine only: here prefer names/aliases/keywords, or read the catalog
-resource (encode-ui://catalog) and judge the descriptions yourself; enumerate
-with list_components to prove absence, never read scores as calibrated.
+Honesty rules: report `degraded: true` results as lexical-only; read a low
+top-hit `cosine` as a hint to enumerate, never as proof of absence.

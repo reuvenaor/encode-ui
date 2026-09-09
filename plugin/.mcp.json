@@ -2,7 +2,7 @@
   "mcpServers": {
     "registry": {
       "command": "npx",
-      "args": ["-y", "encode-ui"]
+      "args": ["-y", "encode-ui", "--registry-engine", "db"]
     }
   }
 }

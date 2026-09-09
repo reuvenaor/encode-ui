@@ -124,7 +124,7 @@ under the `/encode-ui:*` umbrella:
 
 | What you get | How you reach it |
 |---|---|
-| the MCP server | registered automatically — see the caveat below |
+| the MCP server | registered automatically on the **db engine** (semantic search over the index the package ships; its first query downloads ~1.2 GB of embedding weights, and offline it degrades to lexical) — see the caveat below |
 | `/encode-ui:brand-theme-designer` | the shortcut: hand it a brief, it runs the agent end to end |
 | `brand-theme-designer` agent | designs a full brand from a brief, validates it, writes your CSS, and leaves a brand guide |
 | `/encode-ui:brand-design` | the method: personality tuple, OKLCH role mapping, dark re-derivation, shadow knobs, uniqueness floors |
