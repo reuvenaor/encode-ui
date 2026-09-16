@@ -133,7 +133,8 @@ answers.
   the nearest needs ≥3 differing tuple dimensions; 250–265° (default blue) needs recorded
   brief justification.
 - Font tokens are full CSS stacks with fallbacks, never bare family names, and never a CDN
-  link — self-host or install the family as a package.
+  link — install the family as a Fontsource package and name the family the package
+  declares ("Inter Variable" for a variable package).
 - Mode-invariant keys (fonts, tracking, radius, motion) go in the light block only.
 - Never edit a shadcn UI component to make a brand work — that is a finding to surface plus
   a question, never a unilateral divergence.

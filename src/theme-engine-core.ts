@@ -75,15 +75,31 @@ export interface FontFile {
 }
 
 export interface FontEntry {
+  /** The name presets reference in font-sans/-serif/-mono. */
   family: string
+  /** The name the Fontsource package's own @font-face uses ("Inter Variable"). */
+  cssFamily: string
   category: string
+  /** The Fontsource package — what a theme payload ships as a dependency. */
+  package: string
+  /** Package version; also the public/fonts/<id>/<version>/ path segment. */
+  version: string
+  /** Upstream font revision from the package metadata ("v20"). */
+  fontVersion: string
+  license: string
+  copyright: string
+  /** CSS entry points a theme payload @imports so a consumer install wires the font. */
+  imports: string[]
   files: FontFile[]
-  license?: string
-  source?: string
 }
 
 /** src/themes/fonts.json minus its $comment: slug → family entry. */
 export type FontsManifest = Record<string, FontEntry>
+
+/** A shadcn `css` block: nested at-rules and selectors; `{}` for a bare @import. */
+export interface CssBlock {
+  [key: string]: string | CssBlock
+}
 
 export interface FontStack {
   stack: string
@@ -347,7 +363,9 @@ export function resolveFontStack(value: string, manifest: FontsManifest): FontSt
   const entry = manifestEntry(manifest, value)
   if (!entry) return null
   const fallback = FALLBACKS[entry.category] ?? FALLBACKS.sans
-  const quoted = entry.family.includes(' ') ? `'${entry.family}'` : entry.family
+  // The stack names the PACKAGE's CSS family, so a consumer's Fontsource
+  // @font-face and this stack can never name different families.
+  const quoted = entry.cssFamily.includes(' ') ? `'${entry.cssFamily}'` : entry.cssFamily
   return { stack: `${quoted}, ${fallback}`, files: entry.files.map((f) => f.path), entry }
 }
 
@@ -669,7 +687,7 @@ export function resolvePreset(
 /** The `cssVars` + `css` half of a `registry:theme` payload. */
 export interface ThemePayloadVars {
   cssVars: { theme?: ModeVars; light: ModeVars; dark: ModeVars }
-  css?: { '@layer base': { body: { 'letter-spacing': string } } }
+  css?: CssBlock
 }
 
 /**
@@ -708,9 +726,17 @@ export function themePayloadVars(
   const dark = colorsOf(pDark, false)
   const theme: ModeVars = {}
 
+  // Every hosted family the preset names also ships its Fontsource CSS entry
+  // points, so the payload installs the font rather than describing it.
+  const imports: string[] = []
   for (const key of ['font-sans', 'font-serif', 'font-mono']) {
-    const resolvedStack = resolved.light[key]
-    if (pLight[key] && resolvedStack !== undefined) theme[key] = resolvedStack
+    const authored = pLight[key]
+    if (!authored) continue
+    const font = resolveFontStack(authored, manifest)
+    theme[key] = font ? font.stack : authored
+    for (const spec of font?.entry?.imports ?? []) {
+      if (!imports.includes(spec)) imports.push(spec)
+    }
   }
   const tracking = resolved.light['tracking-normal']
   if (pLight['letter-spacing'] && tracking !== undefined) theme['tracking-normal'] = tracking
@@ -747,11 +773,16 @@ export function themePayloadVars(
   const out: ThemePayloadVars = {
     cssVars: Object.keys(theme).length > 0 ? { theme, light, dark } : { light, dark },
   }
+  // Imports come first: the shadcn CLI writes `css` in key order, and an @import
+  // is only valid at the top of a stylesheet.
+  const css: CssBlock = {}
+  for (const spec of imports) css[`@import "${spec}"`] = {}
   // Tracking is a Tailwind namespace, not an inherited property — the body rule
   // is what actually applies it to the page.
   if (pLight['letter-spacing']) {
-    out.css = { '@layer base': { body: { 'letter-spacing': 'var(--tracking-normal)' } } }
+    css['@layer base'] = { body: { 'letter-spacing': 'var(--tracking-normal)' } }
   }
+  if (Object.keys(css).length > 0) out.css = css
   return out
 }
 
