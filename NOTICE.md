@@ -85,38 +85,72 @@ has its foreground's OKLCH lightness moved just far enough to pass, chroma and h
 The vendored JSON stays as published; the clamp re-applies automatically on any re-sync, and a
 pair the clamp cannot repair fails the build.
 
-## Fonts (`public/fonts/`)
+## Fonts
 
-The self-hosted font library (latin subsets, woff2, sourced via Fontsource's CDN mirror of
-Google Fonts) — every family under the **SIL Open Font License 1.1**, with the family's own
-`OFL.txt` (copyright line included) committed alongside its files:
+Every font this repo ships comes from a pinned **Fontsource** npm package listed in
+`package.json` `devDependencies`. Those packages are the font catalogue: `npm run fonts`
+(`scripts/build-fonts.mjs`, the first step of both `npm run manifest` and `npm run themes`)
+copies each family's latin `woff2` and its `LICENSE` out of `node_modules` into
+`public/fonts/<id>/<package-version>/`, regenerates `src/themes/fonts.json`, and rewrites
+the table below. `public/fonts/` is a build artifact and is not committed.
 
-| Family | Directory | Upstream |
-|---|---|---|
-| Inter | `public/fonts/inter/` | https://github.com/rsms/inter |
-| Space Grotesk | `public/fonts/space-grotesk/` | https://github.com/floriankarsten/space-grotesk |
-| DM Sans | `public/fonts/dm-sans/` | https://github.com/googlefonts/dm-fonts |
-| Instrument Sans | `public/fonts/instrument-sans/` | https://github.com/Instrument/instrument-sans |
-| Geist | `public/fonts/geist/` | https://github.com/vercel/geist-font |
-| Plus Jakarta Sans | `public/fonts/plus-jakarta-sans/` | https://github.com/tokotype/PlusJakartaSans |
-| Manrope | `public/fonts/manrope/` | https://github.com/sharanda/manrope |
-| Bricolage Grotesque | `public/fonts/bricolage-grotesque/` | https://github.com/ateliertriay/bricolage |
-| Figtree | `public/fonts/figtree/` | https://github.com/erikdkennedy/figtree |
-| JetBrains Mono | `public/fonts/jetbrains-mono/` | https://github.com/JetBrains/JetBrainsMono |
-| Space Mono | `public/fonts/space-mono/` | https://github.com/googlefonts/spacemono |
-| Geist Mono | `public/fonts/geist-mono/` | https://github.com/vercel/geist-font |
-| IBM Plex Mono | `public/fonts/ibm-plex-mono/` | https://github.com/IBM/plex |
-| Playfair Display | `public/fonts/playfair-display/` | https://github.com/clauseggers/Playfair-Display |
-| Lora | `public/fonts/lora/` | https://github.com/cyrealtype/Lora-Cyrillic |
-| Fraunces | `public/fonts/fraunces/` | https://github.com/undercasetype/Fraunces |
-| Instrument Serif | `public/fonts/instrument-serif/` | https://github.com/Instrument/instrument-serif |
-| EB Garamond | `public/fonts/eb-garamond/` | https://github.com/octaviopardo/EBGaramond12 |
-| Newsreader | `public/fonts/newsreader/` | https://github.com/productiontype/Newsreader |
-| Bitter | `public/fonts/bitter/` | https://github.com/solmatas/BitterPro |
-| Architects Daughter | `public/fonts/architects-daughter/` | https://fonts.google.com/specimen/Architects+Daughter |
+Fontsource's own packaging code is MIT. Each package carries the FONT's licence — the SPDX
+id in `package.json` and `metadata.json`, plus a `LICENSE` file whose first line is the
+copyright statement and whose body is the full permission notice. That `LICENSE` is copied
+next to the `woff2` files, so every copy we serve travels with its notice, as OFL 1.1 §2 and
+Apache-2.0 §4 require. All families are built by Fontsource from
+[github.com/google/fonts](https://github.com/google/fonts).
 
-The manifest is `src/themes/fonts.json`; `scripts/build-themes.mjs` emits `@font-face` rules
-only for families a theme preset references.
+A theme payload that names a hosted family ships the Fontsource package in `dependencies`
+and one `@import` per file set in `css`, so `npx shadcn@latest add @encode-ui/theme-<name>`
+installs the font as a dependency of the consumer's own project. Nothing here is served
+from a font CDN.
+
+**Licence allowlist.** The build accepts `OFL-1.1` and `Apache-2.0` and fails on anything
+else, naming the package and the licence. The refused case we hit in practice is
+**UFL-1.0** (the Ubuntu Font Licence): it is not OSI approved, and both
+[Debian](https://packages.debian.org/sid/fonts-ubuntu) and
+[Fedora](https://fedoraproject.org/wiki/Licensing/UbuntuFontLicense) class it non-free.
+
+**Reserved Font Names.** [OFL FAQ 2.6](https://openfontlicense.org/ofl-faq/) says subsetting
+is a modification, which "would not normally allow the use of RFNs", and Fontsource ships
+Google's subsetted builds under the original names. Rather than take that risk, the build
+refuses any package whose copyright statement declares a Reserved Font Name, and the
+catalogue dropped three families that do: **Lora**, **Playfair Display** and **IBM Plex
+Mono** (RFN "Plex"). Four themes were re-paired — `vellum` and `cinder` moved off Lora to
+Newsreader and Bitter, `grimoire` and `ensign` moved off IBM Plex Mono to JetBrains Mono.
+**Bitter** stays: its reserved name is "Bitter Pro", which the shipped "Bitter" does not
+use.
+
+That check reads the copyright statement Fontsource ships — `LICENSE` line 1 and
+`metadata.json` `license.attribution`. Fontsource scrapes that line, and it can drift from
+the upstream `OFL.txt`: IBM Plex is the known case
+([fontsource/fontsource#1085](https://github.com/fontsource/fontsource/issues/1085)), where
+the RFN is upstream but not in the package. So the gate catches a family that declares its
+RFN in the package, and adding a family still needs a human to read the upstream licence.
+
+<!-- fonts:begin -->
+| Family | Fontsource package | Version | Font | License | Copyright |
+|---|---|---|---|---|---|
+| Architects Daughter | `@fontsource/architects-daughter` | 5.3.0 | v20 | OFL-1.1 | Copyright (c) 2010, Kimberly Geswein (kimberlygeswein.com) |
+| Bitter | `@fontsource-variable/bitter` | 5.3.0 | v42 | OFL-1.1 | Copyright 2011 The Bitter Project Authors (https://github.com/solmatas/BitterPro) |
+| Bricolage Grotesque | `@fontsource-variable/bricolage-grotesque` | 5.3.0 | v9 | OFL-1.1 | Copyright 2022 The Bricolage Grotesque Project Authors (https://github.com/ateliertriay/bricolage) |
+| DM Sans | `@fontsource-variable/dm-sans` | 5.3.0 | v17 | OFL-1.1 | Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts) |
+| EB Garamond | `@fontsource-variable/eb-garamond` | 5.3.0 | v33 | OFL-1.1 | Copyright 2017 The EB Garamond Project Authors (https://github.com/octaviopardo/EBGaramond12) |
+| Figtree | `@fontsource-variable/figtree` | 5.3.0 | v9 | OFL-1.1 | Copyright 2022 The Figtree Project Authors (https://github.com/erikdkennedy/figtree) |
+| Fraunces | `@fontsource-variable/fraunces` | 5.3.0 | v38 | OFL-1.1 | Copyright 2020 The Fraunces Project Authors (github.com/undercasetype/Fraunces) |
+| Geist | `@fontsource-variable/geist` | 5.3.0 | v5 | OFL-1.1 | Copyright 2024 The Geist Project Authors (https://github.com/vercel/geist-font) |
+| Geist Mono | `@fontsource-variable/geist-mono` | 5.3.0 | v6 | OFL-1.1 | Copyright 2024 The Geist Project Authors (https://github.com/vercel/geist-font.git) |
+| Instrument Sans | `@fontsource-variable/instrument-sans` | 5.3.0 | v4 | OFL-1.1 | Copyright 2022 The Instrument Sans Project Authors (https://github.com/Instrument/instrument-sans) |
+| Instrument Serif | `@fontsource/instrument-serif` | 5.3.0 | v5 | OFL-1.1 | Copyright 2022 The Instrument Serif Project Authors (https://github.com/Instrument/instrument-serif) |
+| Inter | `@fontsource-variable/inter` | 5.3.0 | v20 | OFL-1.1 | Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter) |
+| JetBrains Mono | `@fontsource-variable/jetbrains-mono` | 5.3.0 | v24 | OFL-1.1 | Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono) |
+| Manrope | `@fontsource-variable/manrope` | 5.3.0 | v20 | OFL-1.1 | Copyright 2019 The Manrope Project Authors (https://github.com/sharanda/manrope) |
+| Newsreader | `@fontsource-variable/newsreader` | 5.3.0 | v26 | OFL-1.1 | Copyright 2020 The Newsreader Project Authors (http://github.com/productiontype/Newsreader) |
+| Plus Jakarta Sans | `@fontsource-variable/plus-jakarta-sans` | 5.3.0 | v12 | OFL-1.1 | Copyright 2020 The Plus Jakarta Sans Project Authors (https://github.com/tokotype/PlusJakartaSans) |
+| Space Grotesk | `@fontsource-variable/space-grotesk` | 5.3.0 | v22 | OFL-1.1 | Copyright 2020 The Space Grotesk Project Authors (https://github.com/floriankarsten/space-grotesk) |
+| Space Mono | `@fontsource/space-mono` | 5.3.0 | v17 | OFL-1.1 | Copyright 2016 The Space Mono Project Authors (https://github.com/googlefonts/spacemono) |
+<!-- fonts:end -->
 
 ## Icon metadata (Lucide)
 
