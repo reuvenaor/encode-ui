@@ -14,7 +14,11 @@ import { createWebEngine } from '../src/engine-web.ts'
 import { loadIconCatalog } from '../src/icons.ts'
 import { loadAnchors } from '../src/theme-anchors.ts'
 import { buildRegistryServer } from '../src/mcp/server.ts'
-import { SearchComponentsOutput } from '../src/mcp/schemas.ts'
+import {
+  GetComponentOutput,
+  GetInstallCommandOutput,
+  SearchComponentsOutput,
+} from '../src/mcp/schemas.ts'
 import { buildCatalogFixture, SPLIT_PARTS, SPLIT_SOURCE } from './fixtures/catalog-fixture.ts'
 
 const fixture = buildCatalogFixture()
@@ -134,6 +138,59 @@ test('a gated item is flagged before the caller spends a source call', async () 
   })
   assert.equal((free.structuredContent as { gated?: boolean }).gated, false)
   assert.ok(!((free.content as { text?: string }[])[0]?.text ?? '').includes('gated'))
+})
+
+test('a gated item advertises no install command, on either channel', async () => {
+  // The contradiction this closes: the payload used to ship `gated: true` and an
+  // `npx shadcn@latest add` line in the same object. shadcn fetches the payload from
+  // the deployed registry with no credentials, so that command answers 401 — one
+  // measured agent ran it and got `[sign_in_required]`. An ungated sibling keeps its
+  // command, so absence means gated rather than "this build stopped emitting them".
+  const detail = await client.callTool({
+    name: 'get_component',
+    arguments: { name: 'fixture-drawer' },
+  })
+  const out = GetComponentOutput.parse(detail.structuredContent)
+  assert.equal(out.gated, true)
+  assert.equal(out.installCmd, undefined)
+  const text = (detail.content as { text?: string }[])[0]?.text ?? ''
+  assert.ok(!text.includes('shadcn@latest add'), 'the prose must not name a command either')
+  assert.match(text, /get_component_source/)
+
+  const free = GetComponentOutput.parse(
+    (await client.callTool({ name: 'get_component', arguments: { name: 'fixture-button' } }))
+      .structuredContent,
+  )
+  assert.equal(free.gated, false)
+  assert.match(free.installCmd ?? '', /shadcn@latest add/)
+
+  // A search hit carries the same answer, so the caller never has to open the item.
+  const search = await client.callTool({
+    name: 'search_components',
+    arguments: { query: 'fixture-drawer' },
+  })
+  const hits = SearchComponentsOutput.parse(search.structuredContent).hits
+  assert.equal(hits[0]?.installCmd, undefined)
+})
+
+test('a gated name is left off a batch install line, not reported unknown', async () => {
+  // One gated name fails the install of every item beside it on the same command.
+  const mixed = await client.callTool({
+    name: 'get_install_command',
+    arguments: { names: ['fixture-button', 'fixture-drawer'] },
+  })
+  const out = GetInstallCommandOutput.parse(mixed.structuredContent)
+  assert.ok(out.command.includes('fixture-button'))
+  assert.ok(!out.command.includes('fixture-drawer'))
+  assert.deepEqual(out.gated, ['fixture-drawer'])
+  assert.deepEqual(out.unknown, [])
+  assert.match((mixed.content as { text?: string }[])[0]?.text ?? '', /Gated, left off the line/)
+
+  // Nothing installable is an error, not a success carrying an empty command.
+  const only = await call('get_install_command', { names: ['fixture-drawer'] })
+  assert.equal(only.isError, true)
+  assert.match(only.text, /gated/)
+  assert.match(only.text, /get_component_source/)
 })
 
 test('a gated item without a token answers with the sign-in remedy, not a fault', async () => {

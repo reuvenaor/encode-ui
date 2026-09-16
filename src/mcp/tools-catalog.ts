@@ -117,8 +117,10 @@ export function registerCatalogTools(server: McpServer, ctx: RegistryContext): v
           throw new ToolError(
             `"${canonical}" is a gated item — its ${part} requires a registry account. ` +
               `Sign in at ${ctx.identity.homepage} to copy a token, export it as ` +
-              'ENCODE_UI_TOKEN in this MCP server’s environment, and restart; the same ' +
-              `token authorizes the CLI install: ${detail.installCmd}`,
+              'ENCODE_UI_TOKEN in this MCP server’s environment, and restart. That token ' +
+              'is this SERVER’s; `shadcn add` is a separate process and needs the same ' +
+              `token configured for the @encode-ui registry in your own components.json ` +
+              `before \`${detail.installCmd}\` can work.`,
           )
         }
         if (files === 'unavailable') {
@@ -224,18 +226,29 @@ export function registerCatalogTools(server: McpServer, ctx: RegistryContext): v
           .map((n) => stripScope(ctx.identity, n))
           .map((n) => ctx.engine.resolveName(n) ?? n)
         const known = ctx.engine.knownNames()
-        const found = [...new Set(clean.filter((n) => known.has(n)))]
+        const resolved = [...new Set(clean.filter((n) => known.has(n)))]
         const unknown = [...new Set(clean.filter((n) => !known.has(n)))]
+        // A gated name cannot ride the line: shadcn fetches every item on one
+        // command, and the 401 on the gated one fails the whole install. Reported
+        // separately rather than as `unknown`, which would say "no such component".
+        const blocked = resolved.filter((n) => gated.has(n))
+        const found = resolved.filter((n) => !gated.has(n))
 
-        // Partial success is real success: `command` covers what exists and
-        // `unknown` names the rest. But when NOTHING resolved there is no command
-        // to give, and the old '(nothing to install)' was the worst possible
+        // Partial success is real success: `command` covers what is installable and
+        // `unknown` / `gated` name the rest. But when NOTHING is installable there is
+        // no command to give, and the old '(nothing to install)' was the worst possible
         // answer — a SUCCESS whose payload is a parenthetical a model might paste
         // into a shell.
         if (found.length === 0) {
           throw new ToolError(
-            `None of these are encode-ui components: ${unknown.join(', ')}. ` +
-              'Use search_components to find the right names.',
+            blocked.length > 0
+              ? `Nothing here can be installed by \`shadcn add\`: ${blocked.join(', ')} ` +
+                  `${blocked.length === 1 ? 'is' : 'are'} gated, and a gated payload needs ` +
+                  'registry credentials the CLI does not carry. Read the files with ' +
+                  'get_component_source and write them into your tree yourself.' +
+                  (unknown.length > 0 ? ` Not components at all: ${unknown.join(', ')}.` : '')
+              : `None of these are encode-ui components: ${unknown.join(', ')}. ` +
+                  'Use search_components to find the right names.',
           )
         }
         const out: GetInstallCommandOutput = buildInstallOutput(
@@ -243,6 +256,7 @@ export function registerCatalogTools(server: McpServer, ctx: RegistryContext): v
           installCommand(ctx.identity, found),
           found,
           unknown,
+          blocked,
         )
         return ok(renderInstall(out), out)
       }),

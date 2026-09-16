@@ -240,7 +240,12 @@ test('the text channel never contradicts the structured one', async () => {
   const text = (r.content as { text: string }[])[0]!.text
   for (const hit of out.hits) {
     assert.ok(text.includes(hit.name), `${hit.name} is in the payload but not the prose`)
-    assert.ok(text.includes(hit.installCmd), `install command for ${hit.name} missing from prose`)
+    assert.ok(
+      hit.installCmd === undefined
+        ? text.includes('install: gated')
+        : text.includes(hit.installCmd),
+      `install line for ${hit.name} missing from prose`,
+    )
   }
 })
 

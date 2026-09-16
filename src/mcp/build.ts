@@ -53,7 +53,8 @@ const toHit = (h: SearchHit, scoreKind: Hit['scoreKind'], gated: ReadonlySet<str
   description: h.description,
   group: h.group,
   type: h.type,
-  installCmd: h.installCmd,
+  // Omitted for a gated item — see `installCmd` on Hit in schemas.ts.
+  ...(gated.has(h.name) ? {} : { installCmd: h.installCmd }),
   docUrl: h.docUrl,
   score: h.score,
   scoreKind,
@@ -115,7 +116,8 @@ export const buildComponentOutput = (
   motion: detail.motion,
   filePath: detail.filePath,
   partsFilePath: detail.partsFilePath,
-  installCmd: detail.installCmd,
+  // Omitted for a gated item — see `installCmd` on GetComponentOutput in schemas.ts.
+  ...(gated.has(detail.name) ? {} : { installCmd: detail.installCmd }),
   docUrl: detail.docUrl,
   sourceBytes: detail.sourceBytes,
   demoBytes: detail.demoBytes,
@@ -190,8 +192,10 @@ export const buildInstallOutput = (
   command: string,
   found: readonly string[],
   unknown: readonly string[],
+  gated: readonly string[],
 ): GetInstallCommandOutput => ({
   command,
   components: found.map((name) => ({ name, qualifiedName: qualifiedName(id, name) })),
   unknown: [...unknown],
+  gated: [...gated],
 })
