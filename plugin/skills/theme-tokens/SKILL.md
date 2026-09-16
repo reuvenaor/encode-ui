@@ -152,16 +152,41 @@ your own app, and landing near one of them is a signal to weigh, not a blocker.
 
 ## Fonts
 
-Self-host or install as a package; never a CDN `<link>` in shipped output, which puts a
-third-party request on first paint.
+Install the family as an npm package; never a CDN `<link>` in shipped output, which puts a
+third-party request on first paint. **Fontsource is the route**, and it is the one the
+encode-ui registry itself uses:
 
-- **Next.js:** `next/font/local` or `next/font/google`, then set `--font-sans` to the
-  generated CSS variable inside the stack.
-- **Anything else:** `npm i @fontsource-variable/<family>`, import it once at the app
-  entry, and use the family name in the stack.
+```bash
+npm i @fontsource-variable/inter     # variable family
+npm i @fontsource/space-mono         # static family (per-weight CSS entries)
+```
 
-Whatever the route, the family name in your `@font-face` (or the Fontsource package) must
-match the first name in the `font-sans` stack exactly, or the fallback renders silently.
+Then `@import` it in the same CSS file that holds your theme, above everything else:
+
+```css
+@import '@fontsource-variable/inter';
+@import '@fontsource/space-mono/400.css';
+@import '@fontsource/space-mono/700.css';
+```
+
+Tailwind v4 resolves a bare package `@import` from `node_modules` and inlines it, so the
+`@font-face` rules land in your build with no plugin and no config.
+
+**Name the family the package declares.** A variable package declares
+`font-family: 'Inter Variable'`, a static one the plain `'Inter'`. The first name in your
+`font-sans` stack must match that string exactly, or the fallback renders silently. Read
+the package's `index.css` if you are unsure.
+
+If you install a registry theme (`npx shadcn@latest add @encode-ui/theme-<name>`), all of
+this is already done: the payload ships the packages in `dependencies` and the `@import`
+lines in `css`.
+
+**Next.js** is the exception: use `next/font/local` or `next/font/google`, then set
+`--font-sans` to the generated CSS variable inside the stack.
+
+**Before shipping a subsetted build of a family, check its licence for a Reserved Font
+Name.** OFL FAQ 2.6 treats subsetting as a modification, which normally forbids the
+reserved name. Installing the package whole avoids the question.
 
 ## Verification
 

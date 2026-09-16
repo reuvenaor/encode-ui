@@ -71,8 +71,9 @@ export function registerThemeTools(server: McpServer, ctx: RegistryContext): voi
         'on a stock theme). Returns the `cssVars` block in the exact shape a registry:theme ' +
         "payload ships, ready for a consumer's globals.css. Pure computation: nothing is " +
         'written, nothing is fetched. Font keys must be FULL CSS stacks with fallbacks ' +
-        '("Inter, ui-sans-serif, system-ui, sans-serif"), since this server cannot host ' +
-        'font files for you.',
+        '("Inter, ui-sans-serif, system-ui, sans-serif"): this server cannot host font ' +
+        'files, so the consumer installs the family as a Fontsource package and the stack ' +
+        'names whatever that package declares.',
       inputSchema: ValidateThemeInput,
       outputSchema: ValidateThemeOutput.shape,
       annotations: annotations(ctx.engine.kind),
@@ -87,8 +88,10 @@ export function registerThemeTools(server: McpServer, ctx: RegistryContext): voi
           if (value !== undefined && !value.includes(',')) {
             throw new ToolError(
               `${key} is "${value}", a bare family name. Pass a full CSS stack with ` +
-                `fallbacks instead, e.g. "${value}, ui-sans-serif, system-ui, sans-serif" — ` +
-                'this server cannot host font files, so the stack is what the consumer ships.',
+                `fallbacks instead, e.g. "${value}, ui-sans-serif, system-ui, sans-serif". ` +
+                'To ship the face itself, install its Fontsource package ' +
+                '(`npm i @fontsource-variable/<id>`), @import it, and name the family that ' +
+                `package declares — "${value} Variable" for a variable package.`,
             )
           }
         }
