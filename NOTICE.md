@@ -134,10 +134,13 @@ RFN in the package, and adding a family still needs a human to read the upstream
 |---|---|---|---|---|---|
 | Architects Daughter | `@fontsource/architects-daughter` | 5.3.0 | v20 | OFL-1.1 | Copyright (c) 2010, Kimberly Geswein (kimberlygeswein.com) |
 | Bitter | `@fontsource-variable/bitter` | 5.3.0 | v42 | OFL-1.1 | Copyright 2011 The Bitter Project Authors (https://github.com/solmatas/BitterPro) |
+| Bodoni Moda | `@fontsource-variable/bodoni-moda` | 5.3.0 | v28 | OFL-1.1 | Copyright 2020 The Bodoni Moda Project Authors (https://github.com/indestructible-type/Bodoni) |
 | Bricolage Grotesque | `@fontsource-variable/bricolage-grotesque` | 5.3.0 | v9 | OFL-1.1 | Copyright 2022 The Bricolage Grotesque Project Authors (https://github.com/ateliertriay/bricolage) |
+| Courier Prime | `@fontsource/courier-prime` | 5.3.0 | v11 | OFL-1.1 | Copyright 2015 The Courier Prime Project Authors (https://github.com/quoteunquoteapps/CourierPrime). |
 | DM Sans | `@fontsource-variable/dm-sans` | 5.3.0 | v17 | OFL-1.1 | Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts) |
 | EB Garamond | `@fontsource-variable/eb-garamond` | 5.3.0 | v33 | OFL-1.1 | Copyright 2017 The EB Garamond Project Authors (https://github.com/octaviopardo/EBGaramond12) |
 | Figtree | `@fontsource-variable/figtree` | 5.3.0 | v9 | OFL-1.1 | Copyright 2022 The Figtree Project Authors (https://github.com/erikdkennedy/figtree) |
+| Fira Code | `@fontsource-variable/fira-code` | 5.3.0 | v27 | OFL-1.1 | Copyright 2014-2020 The Fira Code Project Authors (https://github.com/tonsky/FiraCode) |
 | Fraunces | `@fontsource-variable/fraunces` | 5.3.0 | v38 | OFL-1.1 | Copyright 2020 The Fraunces Project Authors (github.com/undercasetype/Fraunces) |
 | Geist | `@fontsource-variable/geist` | 5.3.0 | v5 | OFL-1.1 | Copyright 2024 The Geist Project Authors (https://github.com/vercel/geist-font) |
 | Geist Mono | `@fontsource-variable/geist-mono` | 5.3.0 | v6 | OFL-1.1 | Copyright 2024 The Geist Project Authors (https://github.com/vercel/geist-font.git) |
@@ -145,9 +148,20 @@ RFN in the package, and adding a family still needs a human to read the upstream
 | Instrument Serif | `@fontsource/instrument-serif` | 5.3.0 | v5 | OFL-1.1 | Copyright 2022 The Instrument Serif Project Authors (https://github.com/Instrument/instrument-serif) |
 | Inter | `@fontsource-variable/inter` | 5.3.0 | v20 | OFL-1.1 | Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter) |
 | JetBrains Mono | `@fontsource-variable/jetbrains-mono` | 5.3.0 | v24 | OFL-1.1 | Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono) |
+| Libre Baskerville | `@fontsource-variable/libre-baskerville` | 5.3.0 | v24 | OFL-1.1 | Copyright 2012 The Libre Baskerville Project Authors (https://github.com/impallari/Libre-Baskerville) |
 | Manrope | `@fontsource-variable/manrope` | 5.3.0 | v20 | OFL-1.1 | Copyright 2019 The Manrope Project Authors (https://github.com/sharanda/manrope) |
+| Montserrat | `@fontsource-variable/montserrat` | 5.3.0 | v31 | OFL-1.1 | Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat) |
 | Newsreader | `@fontsource-variable/newsreader` | 5.3.0 | v26 | OFL-1.1 | Copyright 2020 The Newsreader Project Authors (http://github.com/productiontype/Newsreader) |
+| Nunito | `@fontsource-variable/nunito` | 5.3.0 | v32 | OFL-1.1 | Copyright 2014 The Nunito Project Authors (https://github.com/googlefonts/nunito) |
+| Open Sans | `@fontsource-variable/open-sans` | 5.3.0 | v44 | OFL-1.1 | Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans) |
+| Outfit | `@fontsource-variable/outfit` | 5.3.0 | v15 | OFL-1.1 | Copyright 2021 The Outfit Project Authors (https://github.com/Outfitio/Outfit-Fonts) |
+| Oxanium | `@fontsource-variable/oxanium` | 5.3.0 | v21 | OFL-1.1 | Copyright 2019 The Oxanium Project Authors (https://github.com/sevmeyer/oxanium) |
 | Plus Jakarta Sans | `@fontsource-variable/plus-jakarta-sans` | 5.3.0 | v12 | OFL-1.1 | Copyright 2020 The Plus Jakarta Sans Project Authors (https://github.com/tokotype/PlusJakartaSans) |
+| Poppins | `@fontsource/poppins` | 5.3.0 | v24 | OFL-1.1 | Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) |
+| Roboto | `@fontsource-variable/roboto` | 5.3.0 | v51 | OFL-1.1 | Copyright 2011 The Roboto Project Authors (https://github.com/googlefonts/roboto-classic) |
+| Roboto Mono | `@fontsource-variable/roboto-mono` | 5.3.0 | v31 | OFL-1.1 | Copyright 2015 The Roboto Mono Project Authors (https://github.com/googlefonts/robotomono) |
+| Source Code Pro | `@fontsource-variable/source-code-pro` | 5.3.0 | v31 | OFL-1.1 | Google Inc. |
+| Source Serif 4 | `@fontsource-variable/source-serif-4` | 5.3.0 | v14 | OFL-1.1 | Google Inc. |
 | Space Grotesk | `@fontsource-variable/space-grotesk` | 5.3.0 | v22 | OFL-1.1 | Copyright 2020 The Space Grotesk Project Authors (https://github.com/floriankarsten/space-grotesk) |
 | Space Mono | `@fontsource/space-mono` | 5.3.0 | v17 | OFL-1.1 | Copyright 2016 The Space Mono Project Authors (https://github.com/googlefonts/spacemono) |
 <!-- fonts:end -->
