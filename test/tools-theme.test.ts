@@ -80,10 +80,18 @@ test('a shipped theme reproduces the numbers in its own brand guide', async () =
 
   // presets.json names font FAMILIES, resolved against the registry's own font
   // manifest. A consumer has no manifest, so the tool takes full stacks — which
-  // is what the shipped payload emits anyway.
+  // is what the shipped payload emits anyway. Every authored slot is converted,
+  // so a preset gaining a font key does not red this test.
+  const FALLBACKS: Record<string, string> = {
+    'font-sans': 'ui-sans-serif, system-ui, sans-serif',
+    'font-serif': 'ui-serif, Georgia, serif',
+    'font-mono': 'ui-monospace, monospace',
+  }
   const light = { ...ensign.light }
-  light['font-sans'] = 'Manrope, ui-sans-serif, system-ui, sans-serif'
-  light['font-mono'] = "'IBM Plex Mono', ui-monospace, monospace"
+  for (const [key, fallback] of Object.entries(FALLBACKS)) {
+    const family = light[key]
+    if (family && !family.includes(',')) light[key] = `'${family}', ${fallback}`
+  }
 
   const { out } = await call({
     slug: 'ensign',

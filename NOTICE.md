@@ -129,6 +129,24 @@ the upstream `OFL.txt`: IBM Plex is the known case
 the RFN is upstream but not in the package. So the gate catches a family that declares its
 RFN in the package, and adding a family still needs a human to read the upstream licence.
 
+**Typography of the vendored palettes.** tweakcn assigns `font-sans` / `font-serif` /
+`font-mono` to most of its presets, and the original vendoring took only the colour tokens.
+Those pairings are restored, so each palette carries the typography its own author chose.
+Five of the families upstream names cannot ship here, and each has a substitute:
+
+| Upstream family | Why it is refused | Substitute |
+|---|---|---|
+| Lora | Reserved Font Name | Newsreader |
+| Playfair Display | Reserved Font Name | Bodoni Moda |
+| Merriweather | Reserved Font Name | Source Serif 4 |
+| IBM Plex Mono | Reserved Font Name ("Plex", upstream) | JetBrains Mono |
+| Ubuntu Mono | UFL-1.0, outside the allowlist | Roboto Mono |
+
+Upstream also names `Georgia`, `Menlo`, `Courier New` and a bare `monospace` in some slots.
+Those are system stacks with nothing to host, so each palette got a hosted family chosen to
+match its character. Four palettes carry no upstream typography at all (`zinc`, which comes
+from shadcn, plus `t3-chat`, `doom-64` and `caffeine`); their pairings were chosen here.
+
 <!-- fonts:begin -->
 | Family | Fontsource package | Version | Font | License | Copyright |
 |---|---|---|---|---|---|
