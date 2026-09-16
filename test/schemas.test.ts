@@ -66,7 +66,7 @@ test('built payloads satisfy their declared schemas', async () => {
   )
   assert.doesNotThrow(() =>
     GetInstallCommandOutput.parse(
-      buildInstallOutput(FIXTURE_ID, 'npx shadcn@latest add @encode-ui/x', ['x'], ['y']),
+      buildInstallOutput(FIXTURE_ID, 'npx shadcn@latest add @encode-ui/x', ['x'], ['y'], ['z']),
     ),
   )
 })
@@ -123,7 +123,13 @@ test('rendered prose names every hit and its install command', async () => {
   const text = renderSearch(FIXTURE_ID, out)
   for (const h of out.hits) {
     assert.ok(text.includes(h.name), `${h.name} missing from the rendered text`)
-    assert.ok(text.includes(h.installCmd), `install command for ${h.name} missing`)
+    // A gated hit carries no command; the prose says so instead of naming one.
+    assert.ok(
+      h.installCmd === undefined
+        ? text.includes('install: gated')
+        : text.includes(h.installCmd),
+      `install line for ${h.name} missing`,
+    )
   }
 })
 
@@ -154,10 +160,18 @@ test('renderers surface the aggregate fields their payload carries', () => {
   assert.match(groups, /2 groups · 41 components/)
 
   const install = renderInstall(
-    buildInstallOutput(FIXTURE_ID, 'npx shadcn@latest add @encode-ui/a', ['a'], ['b']),
+    buildInstallOutput(FIXTURE_ID, 'npx shadcn@latest add @encode-ui/a', ['a'], ['b'], []),
   )
   assert.match(install, /Unknown: b/)
-  assert.ok(!renderInstall(buildInstallOutput(FIXTURE_ID, 'cmd', ['a'], [])).includes('Unknown'))
+  assert.ok(
+    !renderInstall(buildInstallOutput(FIXTURE_ID, 'cmd', ['a'], [], [])).includes('Unknown'),
+  )
+  // A gated name is left off the line and named, so a caller is not told it does not exist.
+  const withGated = renderInstall(
+    buildInstallOutput(FIXTURE_ID, 'npx shadcn@latest add @encode-ui/a', ['a'], [], ['header-03']),
+  )
+  assert.match(withGated, /Gated, left off the line: header-03/)
+  assert.ok(!withGated.includes('Unknown'))
 })
 
 test('find_similar prose names the seed it resolved', async () => {

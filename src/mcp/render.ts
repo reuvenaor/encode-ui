@@ -56,7 +56,9 @@ const hitLines = (id: RegistryIdentity, hits: readonly Hit[]): string =>
           (h.scoreKind === 'rrf' && h.cosine !== null ? ` | cosine: ${h.cosine.toFixed(4)}` : '') +
           (h.pure ? ' | dependency-free' : '') +
           (h.gated ? ' | gated (source needs a registry account)' : ''),
-        `   install: ${h.installCmd}`,
+        h.installCmd === undefined
+          ? '   install: gated — get_component_source, not shadcn add'
+          : `   install: ${h.installCmd}`,
         `   docs: ${h.docUrl}`,
       ].join('\n'),
     )
@@ -122,7 +124,11 @@ export function renderComponent(out: GetComponentOutput): string {
     out.sourceUrl ? `- upstream: ${out.sourceUrl}` : null,
     `- animated: ${out.motion ? 'yes (honours prefers-reduced-motion)' : 'no'}`,
     out.gated ? '- gated: the published source payload requires a registry account' : null,
-    `- install: ${out.installCmd}`,
+    out.installCmd === undefined
+      ? '- install: none — a gated payload is not served to `shadcn add` without registry ' +
+        'credentials in your own components.json. Read the files with get_component_source ' +
+        'and write them into your tree yourself.'
+      : `- install: ${out.installCmd}`,
     `- docs: ${out.docUrl}`,
     // A required step, not a reference — kept on its own line, unabbreviated, because
     // skipping it leaves a component that installs cleanly and then does not work.
@@ -177,7 +183,16 @@ export const renderComponents = (out: ListComponentsOutput): string =>
   ].join('\n')
 
 export const renderInstall = (out: GetInstallCommandOutput): string =>
-  out.unknown.length > 0 ? `${out.command}\n\nUnknown: ${out.unknown.join(', ')}` : out.command
+  [
+    out.command,
+    out.unknown.length > 0 ? `\nUnknown: ${out.unknown.join(', ')}` : null,
+    out.gated.length > 0
+      ? `\nGated, left off the line: ${out.gated.join(', ')}. One gated name fails the ` +
+        'install of every item beside it. Read those with get_component_source instead.'
+      : null,
+  ]
+    .filter((l): l is string => l !== null)
+    .join('\n')
 
 export const renderIcons = (out: FindIconsOutput): string => {
   const lines: string[] = []

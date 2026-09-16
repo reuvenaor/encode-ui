@@ -44,7 +44,19 @@ export const Hit = z
     description: z.string(),
     group: z.string().nullable(),
     type: z.string(),
-    installCmd: z.string(),
+    /**
+     * The `npx shadcn@latest add` line for this item — ABSENT when `gated`.
+     *
+     * A gated payload is served only to a request carrying registry credentials, and
+     * `shadcn add` carries none unless the CALLER configured them for the `@encode-ui`
+     * registry in its own `components.json`. This server's `ENCODE_UI_TOKEN` cannot
+     * supply them: the CLI is a different process. So for a gated item the command is
+     * not a thing the caller can run, and shipping it beside `gated: true` reads as a
+     * contradiction a caller may resolve the wrong way — one measured agent ran it and
+     * got `[sign_in_required]`. Use `get_component_source` instead, which the db and
+     * catalog engines serve outright and the web engine serves with a token.
+     */
+    installCmd: z.string().optional(),
     docUrl: z.string(),
     score: z.number(),
     /**
@@ -234,7 +246,19 @@ export const GetComponentOutput = z.object({
    * `get_component_source` with `part:"source"` returns BOTH.
    */
   partsFilePath: z.string().nullable(),
-  installCmd: z.string(),
+  /**
+   * The `npx shadcn@latest add` line for this item — ABSENT when `gated`.
+   *
+   * A gated payload is served only to a request carrying registry credentials, and
+   * `shadcn add` carries none unless the CALLER configured them for the `@encode-ui`
+   * registry in its own `components.json`. This server's `ENCODE_UI_TOKEN` cannot
+   * supply them: the CLI is a different process. So for a gated item the command is
+   * not a thing the caller can run, and shipping it beside `gated: true` reads as a
+   * contradiction a caller may resolve the wrong way — one measured agent ran it and
+   * got `[sign_in_required]`. Use `get_component_source` instead, which the db and
+   * catalog engines serve outright and the web engine serves with a token.
+   */
+  installCmd: z.string().optional(),
   docUrl: z.string(),
   /**
    * Cost signals, so a caller can decide whether to fetch the payload before it
@@ -344,11 +368,17 @@ export const GetInstallCommandInput = z
 export type GetInstallCommandInput = z.infer<typeof GetInstallCommandInput>
 
 export const GetInstallCommandOutput = z.object({
-  /** One line installing every KNOWN name. Absent when none were recognised. */
+  /** One line installing every INSTALLABLE known name. Absent when none were recognised. */
   command: z.string(),
   components: z.array(z.object({ name: z.string(), qualifiedName: z.string() }).strict()),
   /** Names with no such component. Partial success is still success. */
   unknown: z.array(z.string()),
+  /**
+   * Known names left OUT of `command` because they are gated — see `installCmd` on Hit.
+   * They are excluded rather than reported unknown, because one gated name in a batch
+   * line fails the install of every other item on it.
+   */
+  gated: z.array(z.string()),
 })
 export type GetInstallCommandOutput = z.infer<typeof GetInstallCommandOutput>
 
