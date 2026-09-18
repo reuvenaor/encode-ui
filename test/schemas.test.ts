@@ -125,9 +125,7 @@ test('rendered prose names every hit and its install command', async () => {
     assert.ok(text.includes(h.name), `${h.name} missing from the rendered text`)
     // A gated hit carries no command; the prose says so instead of naming one.
     assert.ok(
-      h.installCmd === undefined
-        ? text.includes('install: gated')
-        : text.includes(h.installCmd),
+      h.installCmd === undefined ? text.includes('install: gated') : text.includes(h.installCmd),
       `install line for ${h.name} missing`,
     )
   }
