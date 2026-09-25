@@ -55,13 +55,6 @@ export interface PresetDef {
   dark: ModeVars
 }
 
-/** An UNVALIDATED preset entry, as parsed from JSON or user input. */
-export interface RawPresetEntry {
-  character?: unknown
-  light?: ModeVars
-  dark?: ModeVars
-}
-
 export interface ClampReport {
   log: string[]
   skips: string[]
@@ -812,25 +805,60 @@ const isEasing = (v: string): boolean =>
 const isDuration = (v: string): boolean => /^[\d.]+m?s$/.test(v)
 const isColorFn = (v: string): boolean => /^(oklch|hsl)\(/.test(v)
 
+// Local, because this module imports nothing (rag/ vendors it verbatim).
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value)
+
+/** One mode block's string tokens; every other value is reported and left out. */
+function modeTokens(
+  name: string,
+  mode: 'light' | 'dark',
+  block: Record<string, unknown>,
+  errors: string[],
+): ModeVars {
+  const vars: ModeVars = {}
+  for (const [key, value] of Object.entries(block)) {
+    if (typeof value === 'string') vars[key] = value
+    else errors.push(`${name}.${mode}: "${key}" must be a string`)
+  }
+  return vars
+}
+
+/**
+ * Validate a catalogue as parsed from JSON or user input. `presets` is the typed
+ * catalogue with non-string tokens left out: clamp or resolve it only when
+ * `errors` is empty.
+ */
 export function validatePresets(
-  presets: Record<string, RawPresetEntry>,
+  catalogue: Record<string, unknown>,
   manifest: FontsManifest = {},
-): { errors: string[]; warnings: string[] } {
+): { errors: string[]; warnings: string[]; presets: Record<string, PresetDef> } {
   const errors: string[] = []
   const warnings: string[] = []
-  for (const [name, p] of Object.entries(presets)) {
-    for (const key of Object.keys(p)) {
+  const presets: Record<string, PresetDef> = {}
+  for (const [name, entry] of Object.entries(catalogue)) {
+    if (!isRecord(entry)) {
+      errors.push(`${name}: entry is not an object`)
+      continue
+    }
+    for (const key of Object.keys(entry)) {
       if (!['character', 'light', 'dark'].includes(key)) {
         errors.push(`${name}: unknown entry key "${key}"`)
       }
     }
-    if (typeof p.character !== 'string' || !p.character.trim()) {
+    const { character } = entry
+    if (typeof character !== 'string' || !character.trim()) {
       errors.push(`${name}: missing/empty "character"`)
     }
-    if (!p.light || !p.dark) {
+    if (!isRecord(entry.light) || !isRecord(entry.dark)) {
       errors.push(`${name}: missing light/dark block`)
       continue
     }
+    const light = modeTokens(name, 'light', entry.light, errors)
+    const dark = modeTokens(name, 'dark', entry.dark, errors)
+    const p: PresetDef =
+      typeof character === 'string' ? { character, light, dark } : { light, dark }
+    presets[name] = p
     for (const tok of COLOR_TOKENS) {
       if (!p.light[tok]) errors.push(`${name}.light: missing colour "${tok}"`)
       if (!p.dark[tok]) errors.push(`${name}.dark: missing colour "${tok}"`)
@@ -905,7 +933,7 @@ export function validatePresets(
       }
     }
   }
-  return { errors, warnings }
+  return { errors, warnings, presets }
 }
 
 /**
