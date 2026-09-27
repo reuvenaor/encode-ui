@@ -74,9 +74,11 @@ embedding model — they cannot run from a standalone clone.
   one runs the AA clamp and the uniqueness math over a theme the CALLER wrote. It is pure
   computation over those two vendored artifacts — no engine, no network — and a schema
   failure comes back as a report, not a thrown error.
-- **`index.db` is gitignored.** `prepack` verifies a present one against `agent-index.json`'s
-  source digests and refuses a stale one; absent, it packs a catalog-only tarball, which is a
-  supported shape.
+- **`index.db` is gitignored.** `prepack` refuses a present one unless its source digests equal
+  `agent-index.json`'s `sources` AND its `registry_hash` equals a fresh `contentHash` of the
+  registry checkout. The digests cover paths and sizes only, so the hash is what sees a
+  body-only edit, and a standalone clone cannot pack an `index.db` at all. Absent, it packs a
+  catalog-only tarball, which is a supported shape.
 - **Tests carry their reasons.** Most non-obvious assertions exist because something broke;
   the comment above says what. Retarget at the intent rather than deleting.
 
