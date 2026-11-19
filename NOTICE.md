@@ -178,8 +178,8 @@ from shadcn, plus `t3-chat`, `doom-64` and `caffeine`); their pairings were chos
 | Poppins | `@fontsource/poppins` | 5.3.0 | v24 | OFL-1.1 | Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins) |
 | Roboto | `@fontsource-variable/roboto` | 5.3.0 | v51 | OFL-1.1 | Copyright 2011 The Roboto Project Authors (https://github.com/googlefonts/roboto-classic) |
 | Roboto Mono | `@fontsource-variable/roboto-mono` | 5.3.0 | v31 | OFL-1.1 | Copyright 2015 The Roboto Mono Project Authors (https://github.com/googlefonts/robotomono) |
-| Source Code Pro | `@fontsource-variable/source-code-pro` | 5.3.0 | v31 | OFL-1.1 | Google Inc. |
-| Source Serif 4 | `@fontsource-variable/source-serif-4` | 5.3.0 | v14 | OFL-1.1 | Google Inc. |
+| Source Code Pro | `@fontsource-variable/source-code-pro` | 5.3.1 | v32 | OFL-1.1 | Google Inc. |
+| Source Serif 4 | `@fontsource-variable/source-serif-4` | 5.3.1 | v15 | OFL-1.1 | Google Inc. |
 | Space Grotesk | `@fontsource-variable/space-grotesk` | 5.3.0 | v22 | OFL-1.1 | Copyright 2020 The Space Grotesk Project Authors (https://github.com/floriankarsten/space-grotesk) |
 | Space Mono | `@fontsource/space-mono` | 5.3.0 | v17 | OFL-1.1 | Copyright 2016 The Space Mono Project Authors (https://github.com/googlefonts/spacemono) |
 <!-- fonts:end -->
