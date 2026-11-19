@@ -2,7 +2,7 @@
 //
 // The registry deliberately ships NO icon components — lucide-react IS the icon
 // layer (a dependency of 43/200 items, auto-installed by the shadcn CLI). What
-// agents get wrong is the NAME: lucide's 1,594 icons answer to three spellings
+// agents get wrong is the NAME: lucide's 2,092 icons answer to three spellings
 // each plus deprecated aliases, and a hallucinated import is a build error the
 // agent only meets later. This tool resolves every plausible spelling against
 // the vendored catalog and returns short context (tags/categories) so the pick

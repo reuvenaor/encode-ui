@@ -269,7 +269,7 @@ test('find_icons searches by concept and verifies spellings', async () => {
 
   const v = await client.callTool({
     name: 'find_icons',
-    arguments: { names: ['Home', 'AreaChart'] },
+    arguments: { names: ['Home', 'AreaChart', 'CircleAlert'] },
   })
   const ver = FindIconsOutput.parse(v.structuredContent)
   const house = ver.icons.find((i) => i.name === 'house')
@@ -277,6 +277,8 @@ test('find_icons searches by concept and verifies spellings', async () => {
   assert.equal(house.resolvedFrom, 'home')
   assert.equal(ver.unknown.length, 0)
   const text = (v.content as { text: string }[])[0]!.text
-  assert.match(text, /"home" is an alias — import House/)
+  // lucide 1 deprecated `home`; `circle-alert` is a live alias.
+  assert.match(text, /"home" is a deprecated alias — import House/)
   assert.match(text, /"area-chart" is a deprecated alias — import ChartArea/)
+  assert.match(text, /"circle-alert" is an alias — import CircleExclamationPoint/)
 })
