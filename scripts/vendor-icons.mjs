@@ -112,11 +112,12 @@ try {
   // ── 4 · cross-check against the INSTALLED lucide-react ──────────────────────
   const pkgDir = path.join(registryRoot, 'node_modules', 'lucide-react')
   const modDir = path.join(pkgDir, 'dist', 'esm', 'icons')
+  // lucide-react 1 ships its icon modules as .mjs (0.x: .js).
   const canonical = new Set(
     readdirSync(modDir)
-      .filter((f) => f.endsWith('.js') && f !== 'index.js')
+      .filter((f) => f.endsWith('.mjs') && f !== 'index.mjs')
       .filter((f) => readFileSync(path.join(modDir, f), 'utf8').includes('createLucideIcon'))
-      .map((f) => f.slice(0, -'.js'.length)),
+      .map((f) => f.slice(0, -'.mjs'.length)),
   )
   const dts = readFileSync(path.join(pkgDir, 'dist', 'lucide-react.d.ts'), 'utf8')
   const declared = new Set([...dts.matchAll(/^declare const (\w+):/gm)].map((m) => m[1]))

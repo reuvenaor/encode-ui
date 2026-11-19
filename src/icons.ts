@@ -1,5 +1,5 @@
 // The Lucide icon catalog — the committed metadata artifact, loaded once at
-// startup and searched lexically. No database, no embeddings: 1,594 short
+// startup and searched lexically. No database, no embeddings: 2,092 short
 // records with curated tags rank better by direct scoring than a vector arm
 // could justify, and keeping icons OUT of the index means no schema bump, no
 // re-embed, and no pollution of the component eval.
